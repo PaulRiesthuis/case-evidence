@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forensic Psychology | Case Evidence & Likelihood Ratio Student Workbench</title>
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Header / Navbar & Universal Project Toolbar -->
+    <header class="app-header">
+        <div class="header-inner">
+            <div class="brand-wrapper">
+                <span class="brand-badge">Forensic Psychology</span>
+                <div>
+                    <div class="brand-title">
+                        <i class="fas fa-balance-scale"></i> Forensic Psychology Evidence & Likelihood Ratio Workbench
+                    </div>
+                    <div class="brand-subtitle">Student Analysis Tool • 3 Pillars Evaluation • Likelihood Ratios</div>
+                </div>
+            </div>
+
+            <!-- Header Actions -->
+            <div class="header-actions">
+                <div id="autosave-status" class="autosave-status-chip" title="All changes are automatically saved in your browser">
+                    <i class="fas fa-check-circle"></i> <span>Saved locally</span>
+                </div>
+
+                <button class="btn btn-secondary" id="btn-header-guide" onclick="window.app.switchTab('intro')" style="display: none;" title="Return to Introduction & Framework Guide">
+                    <i class="fas fa-book-open"></i> <span>Intro & Guide</span>
+                </button>
+
+                <button class="btn btn-secondary" id="btn-reset-project" style="display: none;" title="Start a fresh new case analysis">
+                    <i class="fas fa-plus-circle"></i> <span>New Case</span>
+                </button>
+
+                <button class="btn btn-secondary" id="theme-toggle-btn">
+                    <i class="fas fa-sun"></i> <span>Light Mode</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Navigation Tabs (Visible only during Case Analysis) -->
+    <nav class="main-nav" id="main-nav-bar" style="display: none;">
+        <div class="nav-container">
+            <button class="nav-tab-btn" data-tab="case-setup">
+                <i class="fas fa-compass"></i> <span>1. Case Scenarios</span>
+                <span class="nav-tab-badge" id="nav-badge-step1">H₁ vs H₂ Set</span>
+            </button>
+            <button class="nav-tab-btn" data-tab="factors">
+                <i class="fas fa-list-check"></i> <span>2. Identified Factors</span>
+                <span class="nav-tab-badge" id="nav-badge-step2">0 Factors</span>
+            </button>
+            <button class="nav-tab-btn" data-tab="checklist">
+                <i class="fas fa-microscope"></i> <span>3. Scientific Quality (3 Pillars)</span>
+                <span class="nav-tab-badge" id="nav-badge-step3">0/0 Rated</span>
+            </button>
+            <button class="nav-tab-btn" data-tab="likelihood-ratio">
+                <i class="fas fa-calculator"></i> <span>4. Likelihood Ratios & Report</span>
+                <span class="nav-tab-badge" id="nav-badge-step4">LR: 1.00</span>
+            </button>
+            <button class="nav-tab-btn" data-tab="moot-court">
+                <i class="fas fa-microphone-alt"></i> <span>5. Moot Court Practice</span>
+                <span class="nav-tab-badge" id="nav-badge-step5">22 Qs</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Workspace Container -->
+    <main class="main-container">
+
+        <!-- ===================================================================
+             PAGE 1: STANDALONE INTRODUCTION & SCIENTIFIC FRAMEWORK GUIDE
+             =================================================================== -->
+        <section class="tab-pane active" id="tab-intro">
+            <div class="section-banner">
+                <div class="banner-content">
+                    <h1><i class="fas fa-graduation-cap"></i> Forensic Psychology Evidence & Likelihood Ratio Workbench</h1>
+                    <p>Expert witness workbench for criminal case evaluation: evaluate psychological literature across the Three Pillars, quantify Likelihood Ratios (Rassin et al., 2022), generate an expert case summary report, and practice oral defense for moot court cross-examinations.</p>
+                </div>
+                <div class="banner-stats">
+                    <button class="btn btn-primary btn-lg" onclick="window.app.switchTab('case-setup')">
+                        <i class="fas fa-play"></i> Start Case Analysis (Step 1)
+                    </button>
+                </div>
+            </div>
+
+            <!-- Course Learning Objectives & Assignment Overview -->
+            <div style="margin-bottom: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; flex-wrap: wrap; gap: 0.4rem;">
+                    <h2 style="font-size: 1.15rem; margin-bottom: 0; color: var(--text-primary);"><i class="fas fa-bullseye" style="color: var(--eur-cyan);"></i> Assignment Focus & Core Learning Objectives</h2>
+                    <span style="font-size: 0.75rem; color: var(--text-muted);"><i class="fas fa-info-circle"></i> Hover over cards for scientific context</span>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 0.85rem;">
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-left: 3.5px solid var(--eur-cyan); border-radius: var(--radius-md); padding: 0.95rem;"
+                         class="info-tip-trigger"
+                         data-tooltip="&lt;div style=&quot;font-size:0.8rem; line-height:1.45;&quot;&gt;&lt;strong style=&quot;color:#38bdf8;&quot;&gt;Pillar Evaluation Framework&lt;/strong&gt;&lt;p style=&quot;margin:0.3rem 0 0 0;&quot;&gt;Scrutinize psychological literature systematically across Replicability (multi-lab / meta-analyses), Generalizability (ecological validity &amp; boundary conditions), and Practical Relevance (SESOI effect size thresholds).&lt;/p&gt;&lt;/div&gt;">
+                        <div style="font-weight: 700; font-size: 0.88rem; color: var(--eur-cyan); margin-bottom: 0.25rem; display: flex; align-items: center; justify-content: space-between;">
+                            <span><i class="fas fa-microscope"></i> 1. Critical Literature Evaluation</span>
+                            <span class="info-tip">ⓘ</span>
+                        </div>
+                        <p style="font-size: 0.77rem; color: var(--text-secondary); line-height: 1.45; margin: 0;">
+                            Evaluate studies across <strong>Replicability</strong>, <strong>Generalizability</strong> (ecological validity), and <strong>Practical Relevance</strong> (SESOI).
+                        </p>
+                    </div>
+
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-left: 3.5px solid var(--eur-green); border-radius: var(--radius-md); padding: 0.95rem;"
+                         class="info-tip-trigger"
+                         data-tooltip="&lt;div style=&quot;font-size:0.8rem; line-height:1.45;&quot;&gt;&lt;strong style=&quot;color:#10b981;&quot;&gt;Legal Communication Standards&lt;/strong&gt;&lt;p style=&quot;margin:0.3rem 0 0 0;&quot;&gt;Translate conditional probabilities and Likelihood Ratios into intuitive verbal statements (Jarosz &amp; Wiley, 2014) that judges and legal practitioners can readily apply without committing the Prosecutor's Fallacy.&lt;/p&gt;&lt;/div&gt;">
+                        <div style="font-weight: 700; font-size: 0.88rem; color: var(--eur-green); margin-bottom: 0.25rem; display: flex; align-items: center; justify-content: space-between;">
+                            <span><i class="fas fa-file-signature"></i> 2. Communication for Legal Audiences</span>
+                            <span class="info-tip">ⓘ</span>
+                        </div>
+                        <p style="font-size: 0.77rem; color: var(--text-secondary); line-height: 1.45; margin: 0;">
+                            Translate cognitive psychology and Likelihood Ratios into plain language for legal triers of fact.
+                        </p>
+                    </div>
+
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-left: 3.5px solid var(--eur-gold); border-radius: var(--radius-md); padding: 0.95rem;"
+                         class="info-tip-trigger"
+                         data-tooltip="&lt;div style=&quot;font-size:0.8rem; line-height:1.45;&quot;&gt;&lt;strong style=&quot;color:#f59e0b;&quot;&gt;Adversarial Testimony Demeanor&lt;/strong&gt;&lt;p style=&quot;margin:0.3rem 0 0 0;&quot;&gt;Practice answering high-pressure cross-examination questions calmly and objectively (&lt;em&gt;'defend, but don't be defensive'&lt;/em&gt;), acknowledging scientific limitations while standing firm on robust meta-analytic findings.&lt;/p&gt;&lt;/div&gt;">
+                        <div style="font-weight: 700; font-size: 0.88rem; color: var(--eur-gold); margin-bottom: 0.25rem; display: flex; align-items: center; justify-content: space-between;">
+                            <span><i class="fas fa-gavel"></i> 3. Adversarial Moot Court Defense</span>
+                            <span class="info-tip">ⓘ</span>
+                        </div>
+                        <p style="font-size: 0.77rem; color: var(--text-secondary); line-height: 1.45; margin: 0;">
+                            Defend findings objectively under cross-examination (<em>"defend, don't be defensive"</em>).
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- The 5-Step Methodology Roadmap -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; flex-wrap: wrap; gap: 0.4rem;">
+                <h2 style="font-size: 1.15rem; margin-bottom: 0;"><i class="fas fa-route" style="color: var(--eur-green);"></i> The 5-Step Forensic Evidence Workflow</h2>
+                <span style="font-size: 0.75rem; color: var(--text-muted);">Click any card to jump directly to that step</span>
+            </div>
+
+            <div class="intro-grid">
+                <!-- Step 1 Card -->
+                <div class="intro-step-card" onclick="window.app.switchTab('case-setup')" style="cursor: pointer;"
+                     data-tooltip="&lt;div style=&quot;font-size:0.8rem; line-height:1.45;&quot;&gt;&lt;strong style=&quot;color:#60a5fa;&quot;&gt;Step 1: Scenarios &amp; Hypotheses&lt;/strong&gt;&lt;p style=&quot;margin:0.3rem 0 0 0;&quot;&gt;Set case details and formulate mutually exclusive primary (H1) vs. alternative (H2) hypotheses using forensic presets or custom text.&lt;/p&gt;&lt;/div&gt;">
+                    <span class="intro-step-number">01</span>
+                    <div class="intro-step-icon" style="background: rgba(59, 130, 246, 0.15); color: var(--eur-blue);">
+                        <i class="fas fa-compass"></i>
+                    </div>
+                    <h3 style="font-size: 0.98rem; margin-bottom: 0.3rem;">1. Case Scenarios</h3>
+                    <p style="font-size: 0.77rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.6rem;">
+                        Formulate competing hypotheses (H<sub>1</sub> vs. H<sub>2</sub>) and case background.
+                    </p>
+                    <span class="badge badge-system">Step 1: Hypotheses</span>
+                </div>
+
+                <!-- Step 2 Card -->
+                <div class="intro-step-card" onclick="window.app.switchTab('factors')" style="cursor: pointer;"
+                     data-tooltip="&lt;div style=&quot;font-size:0.8rem; line-height:1.45;&quot;&gt;&lt;strong style=&quot;color:#38bdf8;&quot;&gt;Step 2: Identified Case Factors&lt;/strong&gt;&lt;p style=&quot;margin:0.3rem 0 0 0;&quot;&gt;Catalog Estimator and System variables, tag target witnesses/suspects, and rate case importance (1-10).&lt;/p&gt;&lt;/div&gt;">
+                    <span class="intro-step-number">02</span>
+                    <div class="intro-step-icon" style="background: rgba(56, 189, 248, 0.15); color: var(--eur-cyan);">
+                        <i class="fas fa-list-check"></i>
+                    </div>
+                    <h3 style="font-size: 0.98rem; margin-bottom: 0.3rem;">2. Case Factors</h3>
+                    <p style="font-size: 0.77rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.6rem;">
+                        Catalog Estimator & System variables with case facts and importance (1–10).
+                    </p>
+                    <span class="badge badge-estimator">Step 2: Case Factors</span>
+                </div>
+
+                <!-- Step 3 Card -->
+                <div class="intro-step-card" onclick="window.app.switchTab('checklist')" style="cursor: pointer;"
+                     data-tooltip="&lt;div style=&quot;font-size:0.8rem; line-height:1.45;&quot;&gt;&lt;strong style=&quot;color:#10b981;&quot;&gt;Step 3: 3-Pillar Scrutiny&lt;/strong&gt;&lt;p style=&quot;margin:0.3rem 0 0 0;&quot;&gt;Systematically grade literature quality across Replicability (1-5), Generalizability (1-5), and Practical Relevance (1-5) with empirical notes.&lt;/p&gt;&lt;/div&gt;">
+                    <span class="intro-step-number">03</span>
+                    <div class="intro-step-icon" style="background: rgba(16, 185, 129, 0.15); color: var(--eur-green);">
+                        <i class="fas fa-microscope"></i>
+                    </div>
+                    <h3 style="font-size: 0.98rem; margin-bottom: 0.3rem;">3. 3-Pillar Scrutiny</h3>
+                    <p style="font-size: 0.77rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.6rem;">
+                        Evaluate literature across Replicability, Generalizability, and Practical Relevance (SESOI).
+                    </p>
+                    <span class="badge badge-outline">Step 3: Quality Checklist</span>
+                </div>
+
+                <!-- Step 4 Card -->
+                <div class="intro-step-card" onclick="window.app.switchTab('likelihood-ratio')" style="cursor: pointer;"
+                     data-tooltip="&lt;div style=&quot;font-size:0.8rem; line-height:1.45;&quot;&gt;&lt;strong style=&quot;color:#f59e0b;&quot;&gt;Step 4: Likelihood Ratio Lab&lt;/strong&gt;&lt;p style=&quot;margin:0.3rem 0 0 0;&quot;&gt;Derive conditional probabilities P(E|H1) and P(E|H2), calculate compound LRs (Direct vs. Conservative), and map to Jarosz &amp; Wiley verbal scale.&lt;/p&gt;&lt;/div&gt;">
+                    <span class="intro-step-number">04</span>
+                    <div class="intro-step-icon" style="background: rgba(245, 158, 11, 0.15); color: var(--eur-gold);">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h3 style="font-size: 0.98rem; margin-bottom: 0.3rem;">4. Likelihood Ratios</h3>
+                    <p style="font-size: 0.77rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.6rem;">
+                        Translate findings into Likelihood Ratios and export a structured case evaluation summary.
+                    </p>
+                    <span class="badge badge-outline">Step 4: Likelihood Lab</span>
+                </div>
+
+                <!-- Step 5 Card -->
+                <div class="intro-step-card" onclick="window.app.switchTab('moot-court')" style="cursor: pointer;"
+                     data-tooltip="&lt;div style=&quot;font-size:0.8rem; line-height:1.45;&quot;&gt;&lt;strong style=&quot;color:#a855f7;&quot;&gt;Step 5: Moot Court Arena&lt;/strong&gt;&lt;p style=&quot;margin:0.3rem 0 0 0;&quot;&gt;Prepare for adversarial cross-examination with timed practice questions from prosecution, defense, and judge perspectives.&lt;/p&gt;&lt;/div&gt;">
+                    <span class="intro-step-number">05</span>
+                    <div class="intro-step-icon" style="background: rgba(139, 92, 246, 0.15); color: var(--eur-purple);">
+                        <i class="fas fa-gavel"></i>
+                    </div>
+                    <h3 style="font-size: 0.98rem; margin-bottom: 0.3rem;">5. Moot Court Practice</h3>
+                    <p style="font-size: 0.77rem; color: var(--text-secondary); line-height: 1.45; margin-bottom: 0.6rem;">
+                        Practice oral expert testimony against timed cross-examination practice questions.
+                    </p>
+                    <span class="badge badge-role-judge">Step 5: Moot Court Arena</span>
+                </div>
+            </div>
+
+            <!-- Concrete Pedagogical Tutorial Example (Interactive Collapsible Accordion) -->
+            <div class="collapsible-box collapsed" id="intro-example-box">
+                <div class="collapsible-header" onclick="window.app.toggleCollapsibleBox('intro-example-box')">
+                    <div style="display: flex; align-items: center; gap: 0.55rem; flex-wrap: wrap;">
+                        <i class="fas fa-lightbulb" style="color: var(--eur-gold);"></i>
+                        <span style="font-weight: 700; font-size: 0.95rem; color: var(--eur-gold);">
+                            Concrete Illustrative Example: End-to-End Case Evaluation Walkthrough
+                        </span>
+                        <span class="badge badge-outline" style="font-size: 0.7rem; margin-left: 0.4rem;">Click to expand / collapse walkthrough</span>
+                    </div>
+                    <i class="fas fa-chevron-down collapse-icon"></i>
+                </div>
+                <div class="collapsible-content">
+                    <!-- Case Incident Summary -->
+                    <div style="background: var(--bg-surface-elevated); border: 1px solid var(--border-color); border-left: 3.5px solid var(--eur-cyan); border-radius: var(--radius-sm); padding: 0.85rem 1rem; margin-bottom: 0.9rem;">
+                        <div style="font-weight: 700; font-size: 0.84rem; color: var(--eur-cyan); margin-bottom: 0.25rem;">
+                            <i class="fas fa-file-lines"></i> Case Incident Description:
+                        </div>
+                        <p style="font-size: 0.78rem; color: var(--text-secondary); margin: 0; line-height: 1.5;">
+                            An eyewitness stood at a bus stop at dusk when a robbery occurred <strong>15 meters away</strong> under <strong>low street lighting (~10 lux)</strong>. The perpetrator pointed a handgun at the victim for 10 seconds before fleeing. Two weeks later, the witness identified the suspect in a 6-person photographic lineup.
+                        </p>
+                    </div>
+
+                    <!-- Step 1: The Two Competing Scenarios (Hypotheses) -->
+                    <div style="margin-bottom: 0.9rem;">
+                        <div style="font-weight: 700; font-size: 0.82rem; color: var(--text-primary); margin-bottom: 0.45rem; display: flex; align-items: center; gap: 0.4rem;">
+                            <i class="fas fa-compass" style="color: var(--eur-blue);"></i> <span>Step 1: Formulate the Two Competing Scenarios (Hypotheses)</span>
+                        </div>
+                        <div class="responsive-grid-2col">
+                            <div style="background: rgba(0, 163, 112, 0.08); border: 1px solid rgba(0, 163, 112, 0.35); border-left: 3px solid var(--eur-green); border-radius: var(--radius-sm); padding: 0.65rem 0.8rem; font-size: 0.76rem; line-height: 1.45;">
+                                <strong style="color: var(--eur-green); display: block; margin-bottom: 0.2rem;">
+                                    <i class="fas fa-check-circle"></i> Primary Hypothesis (H₁):
+                                </strong>
+                                <span style="color: var(--text-primary);">
+                                    The eyewitness identification is accurate (The suspect is the actual perpetrator seen by the witness).
+                                </span>
+                            </div>
+                            <div style="background: rgba(229, 168, 35, 0.08); border: 1px solid rgba(229, 168, 35, 0.35); border-left: 3px solid var(--eur-gold); border-radius: var(--radius-sm); padding: 0.65rem 0.8rem; font-size: 0.76rem; line-height: 1.45;">
+                                <strong style="color: var(--eur-gold); display: block; margin-bottom: 0.2rem;">
+                                    <i class="fas fa-times-circle"></i> Alternative Hypothesis (H₂):
+                                </strong>
+                                <span style="color: var(--text-primary);">
+                                    The eyewitness identification is mistaken (The suspect is an innocent person mistakenly identified).
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Steps 2-4: Scrutiny & Likelihood Ratio Evaluation -->
+                    <div class="responsive-grid-2col" style="margin-bottom: 0.9rem;">
+                        <!-- Column 1: Factor & 3-Pillar Scrutiny -->
+                        <div style="background: var(--bg-surface-elevated); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.85rem; font-size: 0.76rem; line-height: 1.45;">
+                            <div style="font-weight: 700; color: var(--eur-cyan); margin-bottom: 0.35rem; font-size: 0.8rem;">
+                                <i class="fas fa-microscope"></i> Steps 2 &amp; 3: Factor &amp; 3-Pillar Scrutiny
+                            </div>
+                            <p style="margin-bottom: 0.35rem;">
+                                <strong>Key Factor:</strong> <em>Weapon Focus &amp; Distance at Dusk</em> (Estimator variable; Importance: 8/10, decreases validity).
+                            </p>
+                            <p style="margin-bottom: 0.25rem;">
+                                <strong>• Replicability (4.5/5):</strong> Robustly replicated across meta-analyses (Fawcett et al., 2013).
+                            </p>
+                            <p style="margin-bottom: 0.25rem;">
+                                <strong>• Generalizability (3.5/5):</strong> Laboratory video paradigms show larger effect sizes, but 15m distance + 10 lux is a recognized empirical threshold.
+                            </p>
+                            <p style="margin: 0;">
+                                <strong>• Practical Relevance (4.0/5):</strong> Perceptual degradation exceeds SESOI thresholds under combined weapon presence and dusk lighting.
+                            </p>
+                        </div>
+
+                        <!-- Column 2: Likelihood Ratio & Court Phrasing -->
+                        <div style="background: var(--bg-surface-elevated); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.85rem; font-size: 0.76rem; line-height: 1.45;">
+                            <div style="font-weight: 700; color: var(--eur-green); margin-bottom: 0.35rem; font-size: 0.8rem;">
+                                <i class="fas fa-balance-scale"></i> Step 4: Likelihood Ratio &amp; Phrasing
+                            </div>
+                            <p style="margin-bottom: 0.3rem;">
+                                <strong>Conditional Probabilities:</strong><br/>
+                                • <em>P</em>(Evidence | H₁) = 0.30 &nbsp;|&nbsp; • <em>P</em>(Evidence | H₂) = 0.65
+                            </p>
+                            <p style="margin-bottom: 0.4rem;">
+                                <strong>LR = 0.30 / 0.65 = 0.46</strong> (<em>Anecdotal support for H₂</em>, Jarosz &amp; Wiley scale).
+                            </p>
+                            <div style="background: rgba(0, 163, 112, 0.08); border-left: 3px solid var(--eur-green); padding: 0.45rem 0.6rem; border-radius: 3px; font-style: italic; color: var(--text-primary); font-size: 0.74rem; line-height: 1.4;">
+                                "The witness's limited visual encoding is approximately 2.17 times more likely under H₂ (mistaken identification) than under H₁ (accurate identification), providing anecdotal evidence for H₂."
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Boundary Warning / Step 5 Court Defense Takeaway -->
+                    <div style="background: rgba(239, 68, 68, 0.08); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: var(--radius-sm); padding: 0.65rem 0.85rem; font-size: 0.75rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;">
+                        <strong style="color: var(--eur-danger);"><i class="fas fa-ban"></i> Step 5 Court Defense Boundary:</strong>
+                        <span style="color: var(--text-secondary);">
+                            As an expert witness, you evaluate the likelihood of the <em>evidence</em> given each hypothesis (<em>P(E|H)</em>). Never state posterior guilt probabilities (e.g. <em>"The suspect is 68% innocent"</em>) to avoid the Prosecutor's Fallacy!
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===================================================================
+             STEP 1: CASE SCENARIOS & COMPETING HYPOTHESES
+             =================================================================== -->
+        <section class="tab-pane" id="tab-case-setup">
+            <div class="section-banner">
+                <div class="banner-content">
+                    <h1><i class="fas fa-compass"></i> Step 1: Case Scenarios & Competing Hypotheses</h1>
+                    <p>Formulate the two competing, mutually exclusive hypotheses (<span class="concept-tip" data-tooltip="Primary Hypothesis (H1 / Hp): The proposition being evaluated (e.g. identification is accurate, testimony is valid, confession is true, or prosecution theory).">Hypothesis 1 (H<sub>1</sub> / H<sub>p</sub>) <i class="fas fa-info-circle"></i></span> vs <span class="concept-tip" data-tooltip="Alternative Hypothesis (H2 / Hd): The competing alternative proposition (e.g. mistaken identification, contaminated testimony, false confession, or defense theory).">Hypothesis 2 (H<sub>2</sub> / H<sub>d</sub>) <i class="fas fa-info-circle"></i></span>). Select a standard forensic preset below or write your own custom scenarios.</p>
+                </div>
+                <div class="banner-stats">
+                    <div class="stat-chip">
+                        <span class="stat-num" id="stat-scenario-preset">Preset</span>
+                        <span class="stat-lbl">Scenario Selected</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 1: Case Details & Mutually Exclusive Scenarios -->
+            <div class="dash-card" style="margin-bottom: 1.5rem;">
+                <div class="dash-card-title"><i class="fas fa-folder-open"></i> Case Information & Competing Hypotheses</div>
+                <div class="responsive-grid-2col" style="margin-bottom: 1.25rem;">
+                    <div class="form-group">
+                        <label for="mandate-case-title">Case Name / Reference:</label>
+                        <input type="text" id="mandate-case-title" class="form-input" placeholder="e.g. State v. Nigel / The Witte de With Nightlife Case / Case #2026-A">
+                    </div>
+                    <div class="form-group">
+                        <label for="mandate-commissioner">Commissioned By:</label>
+                        <input type="text" id="mandate-commissioner" class="form-input" placeholder="e.g. Examining Magistrate / Defense Counsel / Public Prosecutor / Court">
+                    </div>
+                </div>
+
+                <!-- Scenario Presets Selector Bar -->
+                <div class="scenario-preset-container">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.4rem;">
+                        <label style="font-size: 0.82rem; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 0.4rem;">
+                            <i class="fas fa-magic" style="color: var(--eur-cyan);"></i> Quick Scenario Presets (Multiple Choice & Fully Editable):
+                        </label>
+                        <span style="font-size: 0.72rem; color: var(--text-muted);">Click a preset to populate or choose 'Custom' to write your own</span>
+                    </div>
+                    <div class="scenario-preset-pills" id="scenario-preset-pills">
+                        <!-- Rendered by js/app.js -->
+                    </div>
+                </div>
+
+                <!-- Two Competing Scenarios Section -->
+                <div class="responsive-grid-2col" style="margin-top: 1rem;">
+                    <!-- Scenario 1: Hypothesis 1 (H1 / Hp) -->
+                    <div class="scenario-card-h1">
+                        <label for="mandate-hp" style="color: var(--eur-blue); font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.35rem;">
+                            <i class="fas fa-check-circle"></i> Scenario 1: <span class="concept-tip" data-tooltip="Primary Hypothesis (H1): The main proposition being evaluated (e.g. accurate identification, uncorrupted testimony, true confession, or prosecution case).">Hypothesis 1 (H<sub>1</sub> / H<sub>p</sub>) <i class="fas fa-info-circle"></i></span>
+                        </label>
+                        <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.4rem;">
+                            State proposition 1 (e.g. Identification is accurate / Testimony is valid / Prosecution theory):
+                        </p>
+                        <textarea id="mandate-hp" class="form-textarea" style="min-height: 70px; font-size: 0.82rem;" placeholder="e.g. Hypothesis 1 (H1): The eyewitness identification is accurate (The suspect is the person seen by the witness)."></textarea>
+                    </div>
+
+                    <!-- Scenario 2: Hypothesis 2 (H2 / Hd) -->
+                    <div class="scenario-card-h2">
+                        <label for="mandate-hd" style="color: var(--eur-gold); font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; gap: 0.4rem; margin-bottom: 0.35rem;">
+                            <i class="fas fa-times-circle"></i> Scenario 2: <span class="concept-tip" data-tooltip="Alternative Hypothesis (H2): The competing proposition (e.g. mistaken identity, contaminated testimony, false confession, or defense case).">Hypothesis 2 (H<sub>2</sub> / H<sub>d</sub>) <i class="fas fa-info-circle"></i></span>
+                        </label>
+                        <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.4rem;">
+                            State proposition 2 (e.g. Identification is mistaken / Testimony is invalid / Defense theory):
+                        </p>
+                        <textarea id="mandate-hd" class="form-textarea" style="min-height: 70px; font-size: 0.82rem;" placeholder="e.g. Hypothesis 2 (H2): The eyewitness identification is mistaken (The suspect is an innocent person mistakenly identified)."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 1 Navigation Footer -->
+            <div class="step-nav-footer">
+                <button type="button" class="btn btn-secondary" onclick="window.app.switchTab('intro')">
+                    <i class="fas fa-book-open"></i> Back to Introduction & Guide
+                </button>
+                <button type="button" class="btn btn-primary btn-lg" onclick="window.app.switchTab('factors')">
+                    Proceed to Step 2: Identified Factors <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- ===================================================================
+             STEP 2: IDENTIFIED CASE FACTORS
+             =================================================================== -->
+        <section class="tab-pane" id="tab-factors">
+            <div class="section-banner">
+                <div class="banner-content">
+                    <h1><i class="fas fa-list-check"></i> Step 2: Identified Case Factors</h1>
+                    <p>Catalog all <span class="concept-tip" data-tooltip="Estimator Factors: Variables related to the witness or event (distance, lighting, intoxication, stress, exposure time).">Estimator Factors <i class="fas fa-info-circle"></i></span> and <span class="concept-tip" data-tooltip="System Factors: Variables controllable by law enforcement (lineup vs showup, interviewing style, delay, feedback).">System Factors <i class="fas fa-info-circle"></i></span> present in your case. Assign case importance (1–10), validity impact direction, target persons, and case facts.</p>
+                </div>
+                <div class="banner-stats">
+                    <div class="stat-chip">
+                        <span class="stat-num" id="stat-total-factors">0</span>
+                        <span class="stat-lbl">Factors Added</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Factors Table Section -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.75rem;">
+                <div>
+                    <h3 style="font-size: 1.15rem;"><i class="fas fa-tasks"></i> Case Factors Table</h3>
+                    <p style="font-size: 0.8rem; color: var(--text-secondary);">
+                        Add and manage psychological factors to be evaluated in Step 3 (Checklist) and Step 4 (Likelihood Ratios).
+                    </p>
+                </div>
+                <button class="btn btn-primary" id="btn-add-case-factor">
+                    <i class="fas fa-plus-circle"></i> Add Factor to Case
+                </button>
+            </div>
+
+            <div id="factor-identification-list">
+                <!-- Filled by checklist.js -->
+            </div>
+
+            <!-- Step 2 Navigation Footer -->
+            <div class="step-nav-footer">
+                <button type="button" class="btn btn-secondary" onclick="window.app.switchTab('case-setup')">
+                    <i class="fas fa-arrow-left"></i> Back to Step 1: Case Scenarios
+                </button>
+                <button type="button" class="btn btn-primary btn-lg" onclick="window.app.switchTab('checklist')">
+                    Proceed to Step 3: Scientific Quality (3 Pillars) <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- ===================================================================
+             STEP 3: SCIENTIFIC QUALITY EVALUATION (THE 3 PILLARS)
+             =================================================================== -->
+        <section class="tab-pane" id="tab-checklist">
+            <div class="section-banner">
+                <div class="banner-content">
+                    <h1><i class="fas fa-microscope"></i> Step 3: Scientific Quality Evaluation (Checklist)</h1>
+                    <p>Conduct your literature search outside the app and evaluate each identified factor across the 3 core pillars: <span class="concept-tip" data-tooltip="Pillar 1 - Replicability: Consistency of findings across independent labs, meta-analyses, and registered reports.">1. Replicability <i class="fas fa-info-circle"></i></span>, <span class="concept-tip" data-tooltip="Pillar 2 - Generalizability: Ecological validity and match between experimental lab conditions and case facts.">2. Generalizability <i class="fas fa-info-circle"></i></span>, and <span class="concept-tip" data-tooltip="Pillar 3 - Practical Relevance: Whether the effect size exceeds the SESOI threshold, modified by case amplifiers and dampeners.">3. Practical Relevance (SESOI & Moderators) <i class="fas fa-info-circle"></i></span>.</p>
+                </div>
+                <div class="banner-stats">
+                    <div class="stat-chip">
+                        <span class="stat-num" id="stat-estimator-factors">0</span>
+                        <span class="stat-lbl">Estimator</span>
+                    </div>
+                    <div class="stat-chip">
+                        <span class="stat-num" id="stat-system-factors">0</span>
+                        <span class="stat-lbl">System</span>
+                    </div>
+                    <div class="stat-chip">
+                        <span class="stat-num" id="stat-avg-quality">0.0 / 5.0</span>
+                        <span class="stat-lbl">Average Score</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="checklist-grid">
+                <!-- Left Sidebar: Factor Selector -->
+                <div>
+                    <div class="filter-bar">
+                        <button class="factor-filter-btn active" data-filter="all">All Factors</button>
+                        <button class="factor-filter-btn" data-filter="estimator">Estimator</button>
+                        <button class="factor-filter-btn" data-filter="system">System</button>
+                        <button class="factor-filter-btn" data-filter="needs-rating"><i class="fas fa-exclamation-circle" style="color: var(--eur-gold);"></i> Needs Rating</button>
+                        <button class="factor-filter-btn" data-filter="completed"><i class="fas fa-check-circle" style="color: var(--eur-green);"></i> Rated</button>
+                    </div>
+
+                    <div class="factor-list-scroll" id="checklist-factor-list-container">
+                        <!-- Filled by checklist.js -->
+                    </div>
+                </div>
+
+                <!-- Right Area: 3-Pillars Sub-Tabs & Guided Checklist -->
+                <div id="checklist-factor-detail-container">
+                    <!-- Filled by checklist.js -->
+                </div>
+            </div>
+
+            <!-- Step 3 Navigation Footer -->
+            <div class="step-nav-footer">
+                <button type="button" class="btn btn-secondary" onclick="window.app.switchTab('factors')">
+                    <i class="fas fa-arrow-left"></i> Back to Step 2: Identified Factors
+                </button>
+                <button type="button" class="btn btn-primary btn-lg" onclick="window.app.switchTab('likelihood-ratio')">
+                    Proceed to Step 4: Likelihood Ratios & Report <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- ===================================================================
+             STEP 4: LIKELIHOOD RATIOS & REPORT
+             =================================================================== -->
+        <section class="tab-pane" id="tab-likelihood-ratio">
+            <div class="section-banner">
+                <div class="banner-content">
+                    <h1><i class="fas fa-balance-scale-right"></i> Step 4: Likelihood Ratios & Expert Report</h1>
+                    <p>Quantify psychological findings into Likelihood Ratios based on <strong>Rassin et al. (2022)</strong>. Probabilities are <strong>automatically derived</strong> from your importance and 3-pillar scores. Export your finalized expert witness report as a <strong>PDF</strong> or <strong>Word Document (.doc)</strong>.</p>
+                </div>
+                <div class="banner-stats">
+                    <div class="stat-chip">
+                        <span class="stat-num">P(E|H₁) / P(E|H₂)</span>
+                        <span class="stat-lbl">Likelihood Ratio</span>
+                    </div>
+                    <div class="stat-chip">
+                        <span class="stat-num">Jarosz & Wiley</span>
+                        <span class="stat-lbl">Scale (2014)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Report Export Toolbar -->
+            <div class="dash-card" style="margin-bottom: 1.25rem; background: var(--bg-surface-elevated); border: 1px solid var(--border-hover);">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.75rem;">
+                    <div>
+                        <h3 style="font-size: 1rem; color: var(--eur-cyan);"><i class="fas fa-file-contract"></i> Forensic Expert Witness Report</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-secondary);">Export your complete case evaluation, 3-pillar scores, and Likelihood Ratio analysis.</p>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <button class="btn btn-secondary" onclick="window.lrLabApp.openReportPreview()">
+                            <i class="fas fa-eye"></i> <span>View Report Preview</span>
+                        </button>
+                        <button class="btn btn-primary" onclick="window.lrLabApp.exportPDFReport()">
+                            <i class="fas fa-file-pdf"></i> <span>Export PDF Report</span>
+                        </button>
+                        <button class="btn btn-secondary" onclick="window.lrLabApp.exportWordReport()">
+                            <i class="fas fa-file-word"></i> <span>Export Word Document (.doc)</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Competing Scenarios Display on LR Page -->
+            <div class="dash-card" style="margin-bottom: 1.25rem;">
+                <div class="dash-card-title"><i class="fas fa-compass"></i> Competing Hypotheses Evaluated (Synced with Step 1)</div>
+                <div class="responsive-grid-2col">
+                    <div class="form-group">
+                        <label for="lr-input-hp" style="color: var(--eur-blue);"><i class="fas fa-check-circle"></i> Primary Hypothesis (H<sub>1</sub> / H<sub>p</sub>):</label>
+                        <input type="text" id="lr-input-hp" class="form-input" placeholder="Hypothesis 1 (H1)">
+                    </div>
+                    <div class="form-group">
+                        <label for="lr-input-hd" style="color: var(--eur-gold);"><i class="fas fa-times-circle"></i> Alternative Hypothesis (H<sub>2</sub> / H<sub>d</sub>):</label>
+                        <input type="text" id="lr-input-hd" class="form-input" placeholder="Hypothesis 2 (H2)">
+                    </div>
+                </div>
+            </div>
+
+            <div class="lr-lab-grid">
+                <!-- Left: Evidence Probability Sliders & Auto-Derived Ratings -->
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.85rem; flex-wrap: wrap; gap: 0.5rem;">
+                        <h3 style="font-size: 1rem;"><i class="fas fa-layer-group"></i> Individual Evidence Items & Probabilities</h3>
+                        <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+                            <button class="btn btn-secondary btn-sm" id="btn-toggle-all-cards" onclick="window.lrLabApp.toggleCollapseAllCards()" title="Collapse or expand all evidence cards">
+                                <i class="fas fa-compress-alt"></i> <span>Collapse All</span>
+                            </button>
+                            <button class="btn btn-primary btn-sm" id="btn-recalculate-all-lrs" title="Recalculate all probabilities from Step 2 & 3 scores">
+                                <i class="fas fa-magic"></i> Auto-Calculate from Scores
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="lr-items-container">
+                        <!-- Filled by likelihoodRatio.js -->
+                    </div>
+                </div>
+
+                <!-- Right: Compound LR & Scale (No Prior Information) -->
+                <div class="bayesian-dashboard">
+                    <!-- Compound Calculation Card -->
+                    <div class="dash-card">
+                        <div class="dash-card-title"><i class="fas fa-chart-pie"></i> Compound Likelihood Ratio (Rassin et al., 2022)</div>
+                        
+                        <div class="compound-lr-display-box">
+                            <div style="font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">Estimated Compound LR</div>
+                            <div class="compound-lr-num" id="res-compound-lr">1.00</div>
+                            <div id="res-verbal-scale" class="verbal-scale-display badge-lr-neutral">Inconclusive / Neutral</div>
+                        </div>
+
+                        <div id="compound-dependence-warning"></div>
+
+                        <!-- Integrated Dynamic Forensic Verbal Interpretation & Fallacy Safeguard -->
+                        <div id="dynamic-forensic-interpretation-container"></div>
+                    </div>
+
+                    <!-- Likelihood Ratio Reference Scales Card (Collapsible) -->
+                    <div class="collapsible-box collapsed" id="lr-scales-box" style="margin-top: 1rem; border-left: 3.5px solid var(--eur-cyan);">
+                        <div class="collapsible-header" onclick="window.app.toggleCollapsibleBox('lr-scales-box')" style="padding: 0.65rem 0.85rem;">
+                            <div style="display: flex; align-items: center; gap: 0.45rem; font-size: 0.82rem; font-weight: 700; color: var(--text-primary);">
+                                <i class="fas fa-balance-scale" style="color: var(--eur-cyan);"></i>
+                                <span>Likelihood Ratio Scales (JW 2014 / ENFSI 2015)</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 0.45rem;">
+                                <span class="badge badge-outline" style="font-size: 0.68rem;">Click to expand</span>
+                                <i class="fas fa-chevron-down collapse-icon" style="font-size: 0.75rem;"></i>
+                            </div>
+                        </div>
+                        <div class="collapsible-content" style="padding: 0.85rem 1rem;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; flex-wrap: wrap; gap: 0.4rem;">
+                                <div style="font-size: 0.76rem; color: var(--text-muted); font-weight: 600;">
+                                    Select Reference Scale:
+                                </div>
+                                <div style="display: flex; gap: 0.3rem;" onclick="event.stopPropagation()">
+                                    <button type="button" class="scale-tab-btn active" id="tab-scale-jw" onclick="event.stopPropagation(); window.lrLabApp.switchScaleTab('jw')">Psychology (JW 2014)</button>
+                                    <button type="button" class="scale-tab-btn" id="tab-scale-enfsi" onclick="event.stopPropagation(); window.lrLabApp.switchScaleTab('enfsi')">Forensic (ENFSI 2015)</button>
+                                </div>
+                            </div>
+
+                            <!-- Jarosz & Wiley (2014) / Rassin et al. (2022) Table -->
+                            <div id="scale-table-jw" style="display: block;">
+                                <table class="jw-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 46%;">Likelihood Ratio (LR)</th>
+                                            <th>Verbal Evidence Strength</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td><strong>LR &gt; 100</strong></td><td><span class="badge badge-lr-extreme-hp">Decisive for H<sub>1</sub></span></td></tr>
+                                        <tr><td><strong>30 &lt; LR &le; 100</strong></td><td><span class="badge badge-lr-modstrong-hp">Very Strong for H<sub>1</sub></span></td></tr>
+                                        <tr><td><strong>10 &lt; LR &le; 30</strong></td><td><span class="badge badge-lr-strong-hp">Strong for H<sub>1</sub></span></td></tr>
+                                        <tr><td><strong>3 &lt; LR &le; 10</strong></td><td><span class="badge badge-lr-moderate-hp">Substantial for H<sub>1</sub></span></td></tr>
+                                        <tr><td><strong>1.05 &lt; LR &le; 3</strong></td><td><span class="badge badge-lr-weak-hp">Anecdotal for H<sub>1</sub></span></td></tr>
+                                        <tr><td><strong>0.95 &le; LR &le; 1.05</strong></td><td><span class="badge badge-lr-neutral">No evidence / Neutral</span></td></tr>
+                                        <tr><td><strong>0.33 &le; LR &lt; 0.95</strong></td><td><span class="badge badge-lr-weak-hd">Anecdotal for H<sub>2</sub></span></td></tr>
+                                        <tr><td><strong>0.10 &le; LR &lt; 0.33</strong></td><td><span class="badge badge-lr-moderate-hd">Substantial for H<sub>2</sub></span></td></tr>
+                                        <tr><td><strong>0.033 &le; LR &lt; 0.10</strong></td><td><span class="badge badge-lr-strong-hd">Strong for H<sub>2</sub></span></td></tr>
+                                        <tr><td><strong>0.010 &le; LR &lt; 0.033</strong></td><td><span class="badge badge-lr-modstrong-hd">Very Strong for H<sub>2</sub></span></td></tr>
+                                        <tr><td><strong>LR &lt; 0.010</strong></td><td><span class="badge badge-lr-extreme-hd">Decisive for H<sub>2</sub></span></td></tr>
+                                    </tbody>
+                                </table>
+                                <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.4rem;">
+                                    <i class="fas fa-info-circle"></i> <em>Standard benchmark in legal & forensic psychology (Jarosz & Wiley, 2014; Rassin et al., 2022).</em>
+                                </div>
+                            </div>
+
+                            <!-- ENFSI Guideline (2015) Symmetrical Table -->
+                            <div id="scale-table-enfsi" style="display: none;">
+                                <table class="jw-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 48%;">Likelihood Ratio (LR)</th>
+                                            <th>Verbal Evidence Strength (ENFSI)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td><strong>LR &gt; 1,000,000</strong></td><td><span class="badge badge-lr-extreme-hp">Extremely Strong for H<sub>1</sub></span></td></tr>
+                                        <tr><td><strong>10,000 &lt; LR &le; 1,000,000</strong></td><td><span class="badge badge-lr-extreme-hp">Very Strong for H<sub>1</sub></span></td></tr>
+                                        <tr><td><strong>1,000 &lt; LR &le; 10,000</strong></td><td><span class="badge badge-lr-modstrong-hp">Strong for H<sub>1</sub></span></td></tr>
+                                        <tr><td><strong>100 &lt; LR &le; 1,000</strong></td><td><span class="badge badge-lr-strong-hp">Moderately Strong for H<sub>1</sub></span></td></tr>
+                                        <tr><td><strong>10 &lt; LR &le; 100</strong></td><td><span class="badge badge-lr-moderate-hp">Moderate for H<sub>1</sub></span></td></tr>
+                                        <tr><td><strong>1 &lt; LR &le; 10</strong></td><td><span class="badge badge-lr-weak-hp">Weak / Limited for H<sub>1</sub></span></td></tr>
+                                        <tr><td><strong>LR = 1.00</strong></td><td><span class="badge badge-lr-neutral">Inconclusive / Neutral</span></td></tr>
+                                        <tr><td><strong>0.10 &le; LR &lt; 1</strong></td><td><span class="badge badge-lr-weak-hd">Weak / Limited for H<sub>2</sub></span></td></tr>
+                                        <tr><td><strong>0.01 &le; LR &lt; 0.10</strong></td><td><span class="badge badge-lr-moderate-hd">Moderate for H<sub>2</sub></span></td></tr>
+                                        <tr><td><strong>0.001 &le; LR &lt; 0.01</strong></td><td><span class="badge badge-lr-strong-hd">Moderately Strong for H<sub>2</sub></span></td></tr>
+                                        <tr><td><strong>0.0001 &le; LR &lt; 0.001</strong></td><td><span class="badge badge-lr-modstrong-hd">Strong for H<sub>2</sub></span></td></tr>
+                                        <tr><td><strong>0.000001 &le; LR &lt; 0.0001</strong></td><td><span class="badge badge-lr-extreme-hd">Very Strong for H<sub>2</sub></span></td></tr>
+                                        <tr><td><strong>LR &lt; 0.000001</strong></td><td><span class="badge badge-lr-extreme-hd">Extremely Strong for H<sub>2</sub></span></td></tr>
+                                    </tbody>
+                                </table>
+                                <div style="font-size: 0.72rem; color: var(--text-muted); margin-top: 0.4rem;">
+                                    <i class="fas fa-info-circle"></i> <em>Official ENFSI (2015) Guideline. Physical traces (DNA) reach &gt;1,000,000; psychological testimony operates in the JW range.</em>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4 Navigation Footer -->
+            <div class="step-nav-footer">
+                <button type="button" class="btn btn-secondary" onclick="window.app.switchTab('checklist')">
+                    <i class="fas fa-arrow-left"></i> Back to Step 3: Quality Checklist
+                </button>
+                <button type="button" class="btn btn-primary btn-lg" onclick="window.app.switchTab('moot-court')">
+                    Proceed to Step 5: Moot Court Practice <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- ===================================================================
+             STEP 5: MOOT COURT ORAL DEFENSE PRACTICE ARENA
+             =================================================================== -->
+        <section class="tab-pane" id="tab-moot-court">
+            <div class="section-banner">
+                <div class="banner-content">
+                    <h1><i class="fas fa-gavel"></i> Step 5: Moot Court Oral Defense Practice Arena</h1>
+                    <p>Practice defending your psychological expert conclusions under adversarial cross-examination. Practice explaining complex cognitive concepts and Likelihood Ratios in plain language while maintaining strict scientific objectivity (<em>"defend, don't be defensive"</em>).</p>
+                </div>
+                <div class="banner-stats">
+                    <div class="stat-chip">
+                        <span class="stat-num" id="stat-moot-questions-total">12</span>
+                        <span class="stat-lbl">Practice Questions</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="moot-court-grid">
+                <!-- Left: Question & Model Answer Card -->
+                <div class="moot-main-card">
+                    <!-- Filters & Question Navigation -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
+                        <div class="filter-bar" style="margin-bottom: 0;">
+                            <button class="factor-filter-btn moot-role-filter-btn active" data-role="all">All Roles</button>
+                            <button class="factor-filter-btn moot-role-filter-btn" data-role="prosecution">Prosecution</button>
+                            <button class="factor-filter-btn moot-role-filter-btn" data-role="defense">Defense</button>
+                            <button class="factor-filter-btn moot-role-filter-btn" data-role="judge">Judge</button>
+                        </div>
+                        <div style="display: flex; gap: 0.4rem;">
+                            <button class="btn btn-secondary btn-sm" id="btn-prev-question"><i class="fas fa-arrow-left"></i> Prev</button>
+                            <button class="btn btn-secondary btn-sm" id="btn-next-question">Next <i class="fas fa-arrow-right"></i></button>
+                            <button class="btn btn-secondary btn-sm" id="btn-random-question"><i class="fas fa-random"></i> Random</button>
+                            <button class="btn btn-secondary btn-sm" id="btn-add-custom-moot-q"><i class="fas fa-plus"></i> Add Question</button>
+                        </div>
+                    </div>
+
+                    <div id="moot-court-question-card">
+                        <!-- Filled by mootCourt.js -->
+                    </div>
+                </div>
+
+                <!-- Right: Speaking Timer & Demeanor Rules -->
+                <div>
+                    <!-- Timer Card -->
+                    <div class="timer-card">
+                        <div style="font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">
+                            <i class="fas fa-stopwatch"></i> Oral Speaking Timer
+                        </div>
+                        <div class="timer-display" id="moot-timer-display">02:00</div>
+                        <div class="timer-controls">
+                            <button class="btn btn-primary" id="btn-start-timer"><i class="fas fa-play"></i> Start Speaking Timer</button>
+                            <button class="btn btn-secondary" id="btn-reset-timer"><i class="fas fa-redo"></i> Reset</button>
+                        </div>
+                        <div style="margin-top: 0.4rem;">
+                            <label style="font-size: 0.75rem; color: var(--text-muted);">Speaking Window: </label>
+                            <select id="select-timer-duration" class="form-select" style="padding: 0.15rem 0.4rem; font-size: 0.75rem; width: auto; display: inline-block;">
+                                <option value="60">1 Minute (Quick Answer)</option>
+                                <option value="120" selected>2 Minutes (Standard Cross-Exam)</option>
+                                <option value="180">3 Minutes (In-Depth Statistical Defense)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Demeanor Coaching Card (Decluttered with Hover Tooltips) -->
+                    <div class="dash-card">
+                        <div class="dash-card-title" style="margin-bottom: 0.5rem;"><i class="fas fa-shield-alt"></i> Court Demeanor Guidelines</div>
+                        <div style="display: flex; flex-direction: column; gap: 0.45rem; font-size: 0.76rem;">
+                            <div class="info-tip-trigger" style="background: var(--bg-surface-elevated); border: 1px solid var(--border-color); border-left: 3px solid var(--eur-green); border-radius: var(--radius-sm); padding: 0.45rem 0.6rem; display: flex; justify-content: space-between; align-items: center;"
+                                 data-tooltip="&lt;div style=&quot;font-size:0.78rem; line-height:1.4;&quot;&gt;&lt;strong style=&quot;color:#10b981;&quot;&gt;Acknowledge Uncertainty&lt;/strong&gt;&lt;p style=&quot;margin:0.2rem 0 0 0;&quot;&gt;Do not claim 100% certainty where psychological science only provides probabilistic bounds. Credibility comes from honest epistemic humility.&lt;/p&gt;&lt;/div&gt;">
+                                <span style="color: var(--text-primary); font-weight: 600;"><i class="fas fa-check text-success"></i> 1. Acknowledge Uncertainty</span>
+                                <span class="info-tip">ⓘ</span>
+                            </div>
+
+                            <div class="info-tip-trigger" style="background: var(--bg-surface-elevated); border: 1px solid var(--border-color); border-left: 3px solid var(--eur-cyan); border-radius: var(--radius-sm); padding: 0.45rem 0.6rem; display: flex; justify-content: space-between; align-items: center;"
+                                 data-tooltip="&lt;div style=&quot;font-size:0.78rem; line-height:1.4;&quot;&gt;&lt;strong style=&quot;color:#38bdf8;&quot;&gt;Translate Statistics&lt;/strong&gt;&lt;p style=&quot;margin:0.2rem 0 0 0;&quot;&gt;Always translate Likelihood Ratios into intuitive verbal statements (e.g., 'approximately equally expected under both scenarios') for judges and jurors.&lt;/p&gt;&lt;/div&gt;">
+                                <span style="color: var(--text-primary); font-weight: 600;"><i class="fas fa-check text-primary"></i> 2. Translate Statistics Plainly</span>
+                                <span class="info-tip">ⓘ</span>
+                            </div>
+
+                            <div class="info-tip-trigger" style="background: var(--bg-surface-elevated); border: 1px solid var(--border-color); border-left: 3px solid var(--eur-blue); border-radius: var(--radius-sm); padding: 0.45rem 0.6rem; display: flex; justify-content: space-between; align-items: center;"
+                                 data-tooltip="&lt;div style=&quot;font-size:0.78rem; line-height:1.4;&quot;&gt;&lt;strong style=&quot;color:#60a5fa;&quot;&gt;Remain Impartial&lt;/strong&gt;&lt;p style=&quot;margin:0.2rem 0 0 0;&quot;&gt;You assist the Court, not defense or prosecution counsel. Maintain complete objectivity regardless of who is cross-examining you.&lt;/p&gt;&lt;/div&gt;">
+                                <span style="color: var(--text-primary); font-weight: 600;"><i class="fas fa-balance-scale" style="color: var(--eur-blue);"></i> 3. Assist Court, Not a Side</span>
+                                <span class="info-tip">ⓘ</span>
+                            </div>
+
+                            <div class="info-tip-trigger" style="background: var(--bg-surface-elevated); border: 1px solid var(--border-color); border-left: 3px solid var(--eur-gold); border-radius: var(--radius-sm); padding: 0.45rem 0.6rem; display: flex; justify-content: space-between; align-items: center;"
+                                 data-tooltip="&lt;div style=&quot;font-size:0.78rem; line-height:1.4;&quot;&gt;&lt;strong style=&quot;color:#fbbf24;&quot;&gt;Defend, Don't Be Defensive&lt;/strong&gt;&lt;p style=&quot;margin:0.2rem 0 0 0;&quot;&gt;If attacked aggressively, pause, breathe, and ground your response in peer-reviewed meta-analyses rather than becoming argumentative.&lt;/p&gt;&lt;/div&gt;">
+                                <span style="color: var(--text-primary); font-weight: 600;"><i class="fas fa-shield-alt text-warning"></i> 4. Defend, Don't Be Defensive</span>
+                                <span class="info-tip">ⓘ</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5 Navigation Footer -->
+            <div class="step-nav-footer">
+                <button type="button" class="btn btn-secondary" onclick="window.app.switchTab('likelihood-ratio')">
+                    <i class="fas fa-arrow-left"></i> Back to Step 4: Likelihood Ratios & Report
+                </button>
+                <button type="button" class="btn btn-primary" onclick="window.lrLabApp.openReportPreview()">
+                    <i class="fas fa-file-contract"></i> View & Export Full Case Report
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===================================================================
+         MODAL: ADD / EDIT FACTOR MODAL
+         =================================================================== -->
+    <div class="modal-overlay" id="factor-editor-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="factor-modal-title">Add New Case Factor</div>
+                <button class="btn btn-secondary btn-sm" onclick="window.checklistApp.closeFactorModal()"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="factor-editor-form">
+                    <!-- Factor Name -->
+                    <div class="form-group">
+                        <label for="input-factor-name">Factor Name: <span style="color: var(--eur-danger);">*</span></label>
+                        <input type="text" id="input-factor-name" class="form-input" placeholder="e.g. Alcohol Intoxication (BAC 0.10%), Viewing Distance (20m), Showup Procedure" required>
+                    </div>
+
+                    <!-- Category: Estimator vs System -->
+                    <div class="form-group">
+                        <label>Category (Estimator vs System):</label>
+                        <div class="radio-cards-group">
+                            <label class="radio-card-label">
+                                <input type="radio" name="input-factor-category" id="input-cat-estimator" value="estimator" checked>
+                                <span><i class="fas fa-eye"></i> <span class="concept-tip" data-tooltip="Estimator Factor: Inherent situational or witness variables beyond police control.">Estimator Factor <i class="fas fa-info-circle"></i></span></span>
+                            </label>
+                            <label class="radio-card-label">
+                                <input type="radio" name="input-factor-category" id="input-cat-system" value="system">
+                                <span><i class="fas fa-user-shield"></i> <span class="concept-tip" data-tooltip="System Factor: Investigative procedures controllable by police and prosecutors.">System Factor <i class="fas fa-info-circle"></i></span></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Impact Direction on Validity -->
+                    <div class="form-group">
+                        <label>Impact on Testimony Validity / Reliability:</label>
+                        <div class="radio-cards-group">
+                            <label class="radio-card-label">
+                                <input type="radio" name="input-factor-dir" id="input-dir-decreases" value="decreases" checked>
+                                <span><i class="fas fa-arrow-down text-danger"></i> Decreases Validity</span>
+                            </label>
+                            <label class="radio-card-label">
+                                <input type="radio" name="input-factor-dir" id="input-dir-increases" value="increases">
+                                <span><i class="fas fa-arrow-up text-success"></i> Increases Validity</span>
+                            </label>
+                            <label class="radio-card-label">
+                                <input type="radio" name="input-factor-dir" id="input-dir-mixed" value="mixed">
+                                <span><i class="fas fa-exchange-alt text-warning"></i> Mixed / Contextual</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Target / Focus Person (Multiple Choice: Suspect, Victim, Witness, Other) -->
+                    <div class="form-group">
+                        <label><i class="fas fa-user-tag"></i> Target Person / Investigative Focus: <span style="color: var(--eur-danger);">* Mandatory</span></label>
+                        <div class="radio-cards-group" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4rem;">
+                            <label class="target-radio-card">
+                                <input type="radio" name="input-factor-target-role" id="target-role-suspect" value="Suspect" onchange="window.checklistApp.handleTargetRoleChange()">
+                                <span><i class="fas fa-user-secret"></i> Suspect</span>
+                            </label>
+                            <label class="target-radio-card">
+                                <input type="radio" name="input-factor-target-role" id="target-role-victim" value="Victim" onchange="window.checklistApp.handleTargetRoleChange()">
+                                <span><i class="fas fa-user-injured"></i> Victim</span>
+                            </label>
+                            <label class="target-radio-card">
+                                <input type="radio" name="input-factor-target-role" id="target-role-witness" value="Witness" checked onchange="window.checklistApp.handleTargetRoleChange()">
+                                <span><i class="fas fa-user"></i> Witness</span>
+                            </label>
+                            <label class="target-radio-card">
+                                <input type="radio" name="input-factor-target-role" id="target-role-other" value="Other" onchange="window.checklistApp.handleTargetRoleChange()">
+                                <span><i class="fas fa-ellipsis-h"></i> Other</span>
+                            </label>
+                        </div>
+                        <div id="target-other-spec-box" style="display: none; margin-top: 0.5rem;">
+                            <input type="text" id="input-factor-target-other" class="form-input" placeholder="Specify target person role (e.g. Lineup Administrator, Informant, Bystander)...">
+                        </div>
+                    </div>
+
+                    <!-- Importance on a scale from 1 to 10 (Mandatory Selection) -->
+                    <div class="form-group" style="background: var(--bg-surface-elevated); padding: 0.85rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                            <label style="font-weight: 700; color: var(--eur-gold); font-size: 0.85rem; margin-bottom: 0;">
+                                <i class="fas fa-star"></i> Case Importance (1 – 10): <span style="color: var(--eur-danger);">* Mandatory</span>
+                            </label>
+                            <span id="display-factor-importance" style="font-weight: 800; font-family: var(--font-mono); font-size: 0.95rem; color: var(--eur-gold);">
+                                Please select (1 - 10)
+                            </span>
+                        </div>
+                        <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.4rem;">
+                            How central / decisive is this specific factor in resolving your case scenario?
+                        </p>
+                        <input type="hidden" id="input-factor-importance" value="">
+                        <div class="importance-pills-group" id="importance-pills-container">
+                            <!-- 1 to 10 buttons dynamically highlighted -->
+                        </div>
+                        <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--text-muted); margin-top: 0.35rem;">
+                            <span>1: Minor / Ancillary</span>
+                            <span>5: Moderate Importance</span>
+                            <span>10: Decisive Factual Issue</span>
+                        </div>
+                    </div>
+
+                    <!-- Case Description -->
+                    <div class="form-group">
+                        <label for="input-factor-desc">Short Description of what occurred in your case:</label>
+                        <textarea id="input-factor-desc" class="form-textarea" placeholder="Describe how this factor manifested in your case scenario..."></textarea>
+                    </div>
+
+                    <!-- Modal Actions -->
+                    <div style="display: flex; justify-content: flex-end; gap: 0.75rem; margin-top: 1.25rem;">
+                        <button type="button" class="btn btn-secondary" onclick="window.checklistApp.closeFactorModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-check"></i> Save Factor</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================
+         MODAL: REPORT PREVIEW MODAL (FOR VIEWING & PRINTING/PDF EXPORT)
+         =================================================================== -->
+    <div class="modal-overlay" id="report-preview-modal" style="display: none;">
+        <div class="modal-content" style="max-width: 900px; max-height: 90vh;">
+            <div class="modal-header">
+                <div class="modal-title"><i class="fas fa-file-invoice"></i> Forensic Expert Witness Report Preview</div>
+                <div style="display: flex; gap: 0.5rem;">
+                    <button class="btn btn-primary btn-sm" onclick="window.print()"><i class="fas fa-print"></i> Print / Save as PDF</button>
+                    <button class="btn btn-secondary btn-sm" onclick="window.lrLabApp.exportWordReport()"><i class="fas fa-file-word"></i> Word (.doc)</button>
+                    <button class="btn btn-secondary btn-sm" onclick="window.lrLabApp.closeReportPreview()"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
+            <div class="modal-body" id="report-modal-body" style="background: var(--bg-surface); padding: 2rem;">
+                <!-- Filled dynamically by likelihoodRatio.js -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container"></div>
+
+    <!-- Application Scripts -->
+    <script src="js/caseData.js"></script>
+    <script src="js/checklist.js"></script>
+    <script src="js/likelihoodRatio.js"></script>
+    <script src="js/mootCourt.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
