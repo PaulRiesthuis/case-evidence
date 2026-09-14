@@ -109,7 +109,7 @@ class App {
                 badge3.textContent = '0 Factors';
                 badge3.className = 'nav-tab-badge';
             } else {
-                const completeCount = factors.filter(f => 
+                const completeCount = factors.filter(f =>
                     f.replicabilityScore !== null && f.replicabilityScore !== undefined &&
                     f.generalizabilityScore !== null && f.generalizabilityScore !== undefined &&
                     f.relevanceScore !== null && f.relevanceScore !== undefined
@@ -256,12 +256,14 @@ class App {
         const toggleBtn = document.getElementById('theme-toggle-btn');
         if (!toggleBtn) return;
 
-        const currentTheme = localStorage.getItem('eur_theme') || 'dark';
+        // Change 'dark' to 'light' here
+        const currentTheme = localStorage.getItem('eur_theme') || 'light';
         document.documentElement.setAttribute('data-theme', currentTheme);
         this.updateThemeIcon(currentTheme);
 
         toggleBtn.addEventListener('click', () => {
-            const current = document.documentElement.getAttribute('data-theme') || 'dark';
+            // Change 'dark' to 'light' here as well
+            const current = document.documentElement.getAttribute('data-theme') || 'light';
             const next = current === 'dark' ? 'light' : 'dark';
             document.documentElement.setAttribute('data-theme', next);
             localStorage.setItem('eur_theme', next);
@@ -298,7 +300,7 @@ class App {
             if (!this.currentProject.mandate) this.currentProject.mandate = {};
             if (caseTitleInput) this.currentProject.mandate.caseTitle = caseTitleInput.value;
             if (commInput) this.currentProject.mandate.commissioner = commInput.value;
-            
+
             let userEditedHypo = false;
             if (hpInput) {
                 this.currentProject.mandate.hypothesisHp = hpInput.value;
@@ -425,7 +427,7 @@ class App {
 
         const toast = document.createElement('div');
         toast.className = `toast toast-${type}`;
-        
+
         let icon = '<i class="fas fa-info-circle"></i>';
         if (type === 'success') icon = '<i class="fas fa-check-circle"></i>';
         if (type === 'warning') icon = '<i class="fas fa-exclamation-triangle"></i>';
