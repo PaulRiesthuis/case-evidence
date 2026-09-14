@@ -178,6 +178,20 @@ class App {
         this.showNotification("Started fresh blank case project!", "info");
     }
 
+    loadCasePreset(presetId) {
+        const preset = APP_DATA?.casePresets?.find(p => p.id === presetId);
+        if (!preset) return;
+
+        this.currentProject = JSON.parse(JSON.stringify(preset));
+        this.saveState();
+        if (window.checklistApp) window.checklistApp.init();
+        if (window.lrLabApp) window.lrLabApp.init();
+        this.updateProjectUI();
+        this.updateNavBadges();
+        this.switchTab('case-setup');
+        this.showNotification(`Loaded example study: ${preset.name}`, 'info');
+    }
+
     bindNavigation() {
         document.querySelectorAll('.nav-tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -259,9 +273,11 @@ class App {
         const toggleBtn = document.getElementById('theme-toggle-btn');
         if (!toggleBtn) return;
         if (theme === 'dark') {
-            toggleBtn.innerHTML = `<i class="fas fa-sun"></i> <span>Light Mode</span>`;
+            toggleBtn.innerHTML = `<i class="fas fa-sun" id="theme-icon"></i>`;
+            toggleBtn.title = "Switch to Light Mode";
         } else {
-            toggleBtn.innerHTML = `<i class="fas fa-moon"></i> <span>Dark Mode</span>`;
+            toggleBtn.innerHTML = `<i class="fas fa-moon" id="theme-icon"></i>`;
+            toggleBtn.title = "Switch to Dark Mode";
         }
     }
 
@@ -340,6 +356,12 @@ class App {
         const box = document.getElementById(boxId);
         if (!box) return;
         box.classList.toggle('collapsed');
+    }
+
+    toggleWorkflowStep(stepId) {
+        const card = document.getElementById(stepId);
+        if (!card) return;
+        card.classList.toggle('expanded');
     }
 
     applyScenarioPreset(presetId) {
@@ -458,10 +480,16 @@ class App {
             let top;
             if (targetRect.top - tipHeight - 12 < 10) {
                 // Not enough room above -> place below target
-                top = targetRect.bottom + window.scrollY + 10;
+                top = targetRect.bottom + 10;
             } else {
                 // Place above target
-                top = targetRect.top + window.scrollY - tipHeight - 10;
+                top = targetRect.top - tipHeight - 10;
+            }
+
+            // Ensure top is within viewport
+            if (top < 10) top = 10;
+            if (top + tipHeight > window.innerHeight - 10) {
+                top = window.innerHeight - tipHeight - 10;
             }
 
             tooltipElem.style.left = `${Math.round(left)}px`;

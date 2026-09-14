@@ -16,7 +16,18 @@ class LikelihoodRatioLab {
 
     getLRItems() {
         if (!window.app || !window.app.currentProject) return [];
-        return window.app.currentProject.lrItems || [];
+        const items = window.app.currentProject.lrItems || [];
+        const factors = window.app.currentProject.factors || [];
+        // Ensure every item has target and category directly from its source factor
+        items.forEach(it => {
+            const f = factors.find(fact => fact.id === it.factorId);
+            if (f) {
+                if (!it.target) it.target = f.target || 'Witness';
+                if (!it.category) it.category = f.category || 'estimator';
+                if (!it.name) it.name = f.name;
+            }
+        });
+        return items;
     }
 
     getHypotheses() {
@@ -536,25 +547,40 @@ class LikelihoodRatioLab {
             return php / Math.max(0.001, phd);
         }
 
-        // Calculate log-LRs for each item
-        const logLRs = items.map(item => {
-            const php = item.php || 0.5;
-            const phd = item.phd || 0.5;
-            const lr = php / Math.max(0.001, phd);
-            return Math.log10(lr);
+        // Group factors by person/source (e.g. Witness de Jong, Suspect Nigel, Victim)
+        const groups = {};
+        items.forEach(item => {
+            const person = (item.target || 'Witness').trim();
+            if (!groups[person]) groups[person] = [];
+            groups[person].push(item);
         });
 
-        // Sort items by absolute diagnosticity magnitude descending
-        logLRs.sort((a, b) => Math.abs(b) - Math.abs(a));
+        // Compute compound LR:
+        // Within each person/observer group with k >= 2 factors, apply correlation dampening (rho = 0.35).
+        // Across separate independent observers/groups, multiply directly.
+        let compoundLR = 1.0;
+        const rho = 0.35;
 
-        // Apply diminishing weights on marginal evidence: w_i = (0.60)^(i-1)
-        let totalLogLR = 0;
-        logLRs.forEach((logVal, index) => {
-            const weight = Math.pow(0.60, index);
-            totalLogLR += weight * logVal;
+        Object.values(groups).forEach(groupItems => {
+            let groupDirectLR = 1.0;
+            groupItems.forEach(it => {
+                const php = it.php || 0.5;
+                const phd = it.phd || 0.5;
+                groupDirectLR *= (php / Math.max(0.001, phd));
+            });
+
+            const k = groupItems.length;
+            if (k <= 1 || groupDirectLR <= 0) {
+                compoundLR *= groupDirectLR;
+            } else {
+                const inflFactor = 1 + (k - 1) * rho;
+                const log10Group = Math.log10(groupDirectLR);
+                const dampenedGroupLR = Math.pow(10, log10Group / inflFactor);
+                compoundLR *= dampenedGroupLR;
+            }
         });
 
-        return Math.pow(10, totalLogLR);
+        return compoundLR;
     }
 
     calculateCompoundLR() {
@@ -583,59 +609,111 @@ class LikelihoodRatioLab {
 
         if (warningElem) {
             if (items.length > 1) {
-                // Build transparent formula breakdown across all factors
+                const isDirect = this.compoundingMode !== 'interdependent';
+                const textColor = isDirect ? '#10b981' : '#f59e0b';
+                const n = items.length;
+
+                // Build formula string with colored items
                 const formulaParts = items.map((item, idx) => {
                     const php = item.php || 0.5;
                     const phd = item.phd || 0.5;
                     const itemLR = php / Math.max(0.001, phd);
-                    return `LR<sub>${idx + 1}</sub> (${itemLR.toFixed(2)})`;
+                    return `<span style="color: ${textColor}; font-weight: 600;">LR<sub>${idx + 1}</sub> (${itemLR.toFixed(2)})</span>`;
                 });
-                const formulaStr = formulaParts.join(' &times; ');
+                const formulaStr = formulaParts.join(` <span style="color: ${textColor}; font-weight: 700;">&times;</span> `);
+
+                // Group analysis for Conservative Mode
+                const groups = {};
+                items.forEach(item => {
+                    const person = (item.target || 'Witness').trim();
+                    if (!groups[person]) groups[person] = [];
+                    groups[person].push(item);
+                });
+
+                const groupEntries = Object.entries(groups);
+                const hasMultiFactorPerson = groupEntries.some(([person, gItems]) => gItems.length > 1);
 
                 const wagenaarTooltipHTML = `&lt;div style=&quot;font-size: 0.8rem; line-height: 1.5; max-width: 440px;&quot;&gt;&lt;div style=&quot;font-weight: 800; color: #38bdf8; margin-bottom: 0.35rem; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 0.25rem;&quot;&gt;&lt;i class=&quot;fas fa-graduation-cap&quot;&gt;&lt;/i&gt; Compounding Case Example (Rassin et al., 2022 / Wagenaar &amp; van der Schrier, 1996)&lt;/div&gt;&lt;p style=&quot;margin: 0 0 0.45rem 0;&quot;&gt;In the robbery case analyzed by Rassin et al. (2022), two separate witnesses evaluated the perpetrator under different physical conditions:&lt;/p&gt;&lt;div style=&quot;background: rgba(255,255,255,0.08); padding: 0.5rem 0.65rem; border-radius: 4px; margin-bottom: 0.45rem; border-left: 3px solid #10b981;&quot;&gt;&lt;strong style=&quot;color: #10b981;&quot;&gt;1. Witness 1 (de Jong - Close proximity, 10 lux):&lt;/strong&gt;&lt;br/&gt;&amp;bull; Identified suspect: P(E|Guilt) = 82%, P(E|Innocence) = 6%&lt;br/&gt;&amp;bull; &lt;strong&gt;LR&lt;sub&gt;1&lt;/sub&gt; = 82% / 6% = 13.67 &amp;approx; 14.00&lt;/strong&gt; (Strong support for Guilt)&lt;br/&gt;&lt;strong style=&quot;color: #f59e0b; margin-top: 0.3rem; display: inline-block;&quot;&gt;2. Witness 2 (Offermans - 7 meters distance, 10 lux):&lt;/strong&gt;&lt;br/&gt;&amp;bull; Non-identification: P(E|Guilt) = 28%, P(E|Innocence) = 93%&lt;br/&gt;&amp;bull; &lt;strong&gt;LR&lt;sub&gt;2&lt;/sub&gt; = 28% / 93% = 0.301 &amp;approx; 0.30&lt;/strong&gt; (Substantial support for Innocence)&lt;br/&gt;&lt;div style=&quot;border-top: 1px dashed rgba(255,255,255,0.2); margin-top: 0.35rem; padding-top: 0.35rem;&quot;&gt;&lt;strong style=&quot;color: #38bdf8;&quot;&gt;Compound Likelihood Ratio:&lt;/strong&gt;&lt;br/&gt;&lt;strong&gt;Compound LR = LR&lt;sub&gt;1&lt;/sub&gt; &amp;times; LR&lt;sub&gt;2&lt;/sub&gt; = 14.00 &amp;times; 0.30 = 4.20&lt;/strong&gt;&lt;br/&gt;&lt;em&gt;(Verbal Scale: Substantial support for Guilt / H&lt;sub&gt;1&lt;/sub&gt;)&lt;/em&gt;&lt;/div&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 0.72rem; color: #cbd5e1;&quot;&gt;&lt;i class=&quot;fas fa-info-circle&quot;&gt;&lt;/i&gt; &lt;strong&gt;Methodological Takeaway:&lt;/strong&gt; Because de Jong and Offermans are two independent observers with separate cognitive systems, direct compounding is methodologically sound. If multiple factors co-occur on a &lt;em&gt;single witness's memory trace&lt;/em&gt;, discuss shared cognitive variance in your report or use the conservative option.&lt;/div&gt;&lt;/div&gt;`;
 
-                const isDirect = this.compoundingMode !== 'interdependent';
+                const inflFactor = (1 + (n - 1) * 0.35).toFixed(2);
 
                 warningElem.style.display = 'block';
                 warningElem.innerHTML = `
-                    <div class="methodology-nuance-card" style="font-size: 0.76rem; margin-top: 0.75rem; background: rgba(56, 189, 248, 0.06); border: 1px solid rgba(56, 189, 248, 0.25); padding: 0.85rem; border-radius: var(--radius-md); line-height: 1.45;">
-                        <div style="font-weight: 800; color: var(--eur-cyan); margin-bottom: 0.45rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.3rem;">
-                            <span style="display: flex; align-items: center; gap: 0.35rem;">
-                                <i class="fas fa-lightbulb" style="color: var(--eur-gold);"></i> Methodological Compounding Options
+                    <div class="methodology-nuance-card" style="font-size: 0.76rem; margin-top: 0.75rem; background: rgba(56, 189, 248, 0.06); border: 1px solid rgba(56, 189, 248, 0.25); padding: 0.95rem; border-radius: var(--radius-md); line-height: 1.45;">
+                        <div style="font-weight: 800; color: var(--eur-cyan); margin-bottom: 0.6rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.3rem;">
+                            <span style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.82rem;">
+                                <i class="fas fa-calculator" style="color: var(--eur-gold);"></i> Methodological Compounding Models
                             </span>
-                            <span class="badge" style="background: ${isDirect ? 'rgba(0, 163, 112, 0.18)' : 'rgba(56, 189, 248, 0.18)'}; color: ${isDirect ? 'var(--eur-green)' : 'var(--eur-cyan)'}; font-size: 0.68rem; font-weight: 700;">
-                                ${isDirect ? 'Direct Product Active' : 'Conservative Interdependence Active'}
+                            <span class="badge" style="background: ${isDirect ? 'rgba(0, 163, 112, 0.2)' : 'rgba(217, 119, 6, 0.2)'}; color: ${isDirect ? '#10b981' : '#f59e0b'}; font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: var(--radius-full);">
+                                <i class="${isDirect ? 'fas fa-check-circle' : 'fas fa-balance-scale'}"></i> ${isDirect ? 'Direct Product Active' : 'Conservative Dampened Active'}
                             </span>
                         </div>
 
                         <!-- Interactive Compounding Mode Switcher -->
-                        <div class="compounding-mode-bar" style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; margin-bottom: 0.6rem;">
-                            <button type="button" class="compounding-mode-btn ${isDirect ? 'active' : ''}" onclick="window.lrLabApp.setCompoundingMode('direct')" title="Direct multiplication as in Rassin et al. (2022) for independent witnesses/evidence">
-                                <i class="fas fa-calculator"></i> <span>Direct Product (${directLR.toFixed(2)})</span>
+                        <div class="compounding-mode-bar">
+                            <button type="button" class="compounding-mode-btn ${isDirect ? 'active direct-active' : ''}" onclick="window.lrLabApp.setCompoundingMode('direct')" title="Direct multiplication (Rassin et al., 2022) for independent witnesses/evidence">
+                                <i class="fas fa-calculator"></i>
+                                <span>Direct Product</span>
+                                <span class="mode-val-badge">${directLR.toFixed(2)}</span>
                             </button>
-                            <button type="button" class="compounding-mode-btn ${!isDirect ? 'active' : ''}" onclick="window.lrLabApp.setCompoundingMode('interdependent')" title="Diminishing weights for correlated factors on the same single witness memory trace">
-                                <i class="fas fa-layer-group"></i> <span>Conservative (${dependentLR.toFixed(2)})</span>
+                            <button type="button" class="compounding-mode-btn ${!isDirect ? 'active conservative-active' : ''}" onclick="window.lrLabApp.setCompoundingMode('interdependent')" title="Dampened for correlated factors on the same single witness memory trace">
+                                <i class="fas fa-shield-halved"></i>
+                                <span>Conservative</span>
+                                <span class="mode-val-badge">${dependentLR.toFixed(2)}</span>
                             </button>
                         </div>
 
-                        <!-- Calculation Formula Breakdown -->
-                        <div style="background: var(--bg-surface-elevated); border: 1px solid var(--border-color); border-radius: var(--radius-sm); padding: 0.45rem 0.65rem; margin-bottom: 0.55rem; font-family: var(--font-mono); font-size: 0.75rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.35rem;">
+                        <!-- Calculation Formula Breakdown (Color Themed: Green for Direct, Yellow/Gold for Conservative) -->
+                        <div style="background: ${isDirect ? 'rgba(0, 163, 112, 0.08)' : 'rgba(217, 119, 6, 0.08)'}; border: 1px solid ${isDirect ? 'rgba(0, 163, 112, 0.4)' : 'rgba(217, 119, 6, 0.4)'}; border-radius: var(--radius-sm); padding: 0.65rem 0.85rem; margin-bottom: 0.65rem; font-family: var(--font-mono); font-size: 0.75rem; line-height: 1.5; color: ${textColor};">
                             ${isDirect ? `
-                                <span><strong style="color: var(--eur-cyan);">Direct Formula:</strong> ${formulaStr}</span>
-                                <span style="font-weight: 800; color: var(--eur-gold); font-size: 0.82rem;">= ${directLR.toFixed(2)}</span>
+                                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.35rem;">
+                                    <span><strong style="color: #10b981;"><i class="fas fa-calculator"></i> Direct Product:</strong> ${formulaStr}</span>
+                                    <span style="font-weight: 800; color: #10b981; font-size: 0.9rem;">= ${directLR.toFixed(2)}</span>
+                                </div>
                             ` : `
-                                <span><strong style="color: var(--eur-cyan);">Weighted Diminishing log₁₀(LR):</strong> 1.0·log(LR₁) + 0.60·log(LR₂) + 0.36·log(LR₃)...</span>
-                                <span style="font-weight: 800; color: var(--eur-gold); font-size: 0.82rem;">= ${dependentLR.toFixed(2)}</span>
+                                <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+                                    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.35rem; border-bottom: 1px dashed rgba(217, 119, 6, 0.25); padding-bottom: 0.35rem;">
+                                        <span><strong style="color: #f59e0b;"><i class="fas fa-layer-group"></i> 1. Individual Factors Base:</strong> ${formulaStr}</span>
+                                        <span style="font-weight: 700; color: #f59e0b; font-size: 0.82rem;">= ${directLR.toFixed(2)}</span>
+                                    </div>
+                                    ${hasMultiFactorPerson ? `
+                                        <div style="font-size: 0.73rem; line-height: 1.45; color: #f59e0b;">
+                                            <strong style="color: #f59e0b;"><i class="fas fa-user-group"></i> 2. Person/Source Trace Adjustment (ρ = 0.35 on co-occurring factors):</strong><br/>
+                                            ${groupEntries.map(([person, gItems]) => {
+                                                const k = gItems.length;
+                                                let gLR = 1.0;
+                                                const gParts = gItems.map(it => {
+                                                    const idx = items.indexOf(it) + 1;
+                                                    const itLR = (it.php || 0.5) / Math.max(0.001, it.phd || 0.5);
+                                                    gLR *= itLR;
+                                                    return `LR<sub>${idx}</sub> (${itLR.toFixed(2)})`;
+                                                });
+                                                if (k > 1) {
+                                                    const gInfl = (1 + (k - 1) * 0.35).toFixed(2);
+                                                    const dLR = Math.pow(10, Math.log10(gLR) / (1 + (k - 1) * 0.35));
+                                                    return `&bull; <strong>${person}</strong> (${k} shared cues): ${gParts.join(' &times; ')} = ${gLR.toFixed(2)} &rarr; Dampened: <strong>${dLR.toFixed(2)}</strong>`;
+                                                } else {
+                                                    return `&bull; <strong>${person}</strong> (1 cue / independent): ${gParts[0]}`;
+                                                }
+                                            }).join('<br/>')}
+                                        </div>
+                                    ` : `
+                                        <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.35rem;">
+                                            <span><strong style="color: #f59e0b;"><i class="fas fa-shield-halved"></i> 2. Single-Source Adjustment (ρ = 0.35, n = ${n}):</strong> 10^[ log₁₀(${directLR.toFixed(2)}) / ${(1 + (n - 1) * 0.35).toFixed(2)} ]</span>
+                                            <span style="font-weight: 800; color: #f59e0b; font-size: 0.88rem;">= ${dependentLR.toFixed(2)}</span>
+                                        </div>
+                                    `}
+                                </div>
                             `}
                         </div>
 
-                        <!-- 2 Nuance Scenarios: Streamlined Progressive Disclosure -->
+                        <!-- 2 Nuance Scenarios: Clickable Interactive Selection Cards -->
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.55rem;">
                             <!-- Scenario 1: Separate Witnesses -->
-                            <div style="background: ${isDirect ? 'rgba(0, 163, 112, 0.12)' : 'rgba(0, 163, 112, 0.05)'}; border: 1px solid rgba(0, 163, 112, ${isDirect ? '0.4' : '0.2'}); border-left: 3px solid var(--eur-green); border-radius: var(--radius-sm); padding: 0.45rem 0.55rem;"
-                                 class="info-tip-trigger"
+                            <div class="compounding-scenario-card" onclick="window.lrLabApp.setCompoundingMode('direct')"
+                                 style="background: ${isDirect ? 'rgba(0, 163, 112, 0.14)' : 'rgba(0, 163, 112, 0.04)'}; border: 1px solid rgba(0, 163, 112, ${isDirect ? '0.6' : '0.2'}); border-left: 3px solid #10b981; border-radius: var(--radius-sm); padding: 0.5rem 0.6rem;"
                                  data-tooltip="&lt;div style=&quot;font-size:0.8rem; line-height:1.45;&quot;&gt;&lt;strong style=&quot;color:#10b981;&quot;&gt;Independent Evidence Sources (Rassin et al., 2022)&lt;/strong&gt;&lt;p style=&quot;margin:0.25rem 0 0 0;&quot;&gt;When factors stem from separate witnesses or separate procedures, errors are independent. Direct multiplication (LR1 &times; LR2 &times; ...) is mathematically and methodologically sound.&lt;/p&gt;&lt;/div&gt;">
-                                <div style="font-weight: 700; color: var(--eur-green); margin-bottom: 0.15rem; font-size: 0.72rem; display: flex; align-items: center; justify-content: space-between;">
+                                <div style="font-weight: 700; color: #10b981; margin-bottom: 0.2rem; font-size: 0.74rem; display: flex; align-items: center; justify-content: space-between;">
                                     <span><i class="fas fa-check-circle"></i> Separate Observers</span>
                                     <span class="info-tip"><i class="fas fa-info"></i></span>
                                 </div>
@@ -645,10 +723,10 @@ class LikelihoodRatioLab {
                             </div>
 
                             <!-- Scenario 2: Same Witness Memory Trace -->
-                            <div style="background: ${!isDirect ? 'rgba(217, 119, 6, 0.12)' : 'rgba(217, 119, 6, 0.05)'}; border: 1px solid rgba(217, 119, 6, ${!isDirect ? '0.4' : '0.2'}); border-left: 3px solid var(--eur-gold); border-radius: var(--radius-sm); padding: 0.45rem 0.55rem;"
-                                 class="info-tip-trigger"
+                            <div class="compounding-scenario-card" onclick="window.lrLabApp.setCompoundingMode('interdependent')"
+                                 style="background: ${!isDirect ? 'rgba(217, 119, 6, 0.14)' : 'rgba(217, 119, 6, 0.04)'}; border: 1px solid rgba(217, 119, 6, ${!isDirect ? '0.6' : '0.2'}); border-left: 3px solid #f59e0b; border-radius: var(--radius-sm); padding: 0.5rem 0.6rem;"
                                  data-tooltip="&lt;div style=&quot;font-size:0.8rem; line-height:1.45;&quot;&gt;&lt;strong style=&quot;color:#fbbf24;&quot;&gt;Shared Cognitive Variance&lt;/strong&gt;&lt;p style=&quot;margin:0.25rem 0 0 0;&quot;&gt;Multiple estimator variables affecting the same witness memory trace share underlying variance. Apply conservative dampening or address correlation in your written expert opinion.&lt;/p&gt;&lt;/div&gt;">
-                                <div style="font-weight: 700; color: var(--eur-gold); margin-bottom: 0.15rem; font-size: 0.72rem; display: flex; align-items: center; justify-content: space-between;">
+                                <div style="font-weight: 700; color: #f59e0b; margin-bottom: 0.2rem; font-size: 0.74rem; display: flex; align-items: center; justify-content: space-between;">
                                     <span><i class="fas fa-balance-scale"></i> Same Witness Trace</span>
                                     <span class="info-tip"><i class="fas fa-info"></i></span>
                                 </div>
@@ -659,7 +737,7 @@ class LikelihoodRatioLab {
                         </div>
 
                         <!-- Tooltip Interactive Hover -->
-                        <div style="display: flex; justify-content: flex-end; align-items: center; border-top: 1px dashed var(--border-color); padding-top: 0.35rem;">
+                        <div style="display: flex; justify-content: flex-end; align-items: center; border-top: 1px dashed var(--border-color); padding-top: 0.4rem;">
                             <span class="concept-tip" style="cursor: pointer; text-decoration: underline dotted; color: var(--eur-cyan); font-weight: 600; font-size: 0.72rem;" data-tooltip="${wagenaarTooltipHTML}">
                                 <i class="fas fa-book-open"></i> Hover for Wagenaar (1996) / Rassin (2022) 2-witness case study &amp; calculation
                             </span>

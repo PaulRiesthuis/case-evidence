@@ -130,6 +130,8 @@ const APP_DATA = {
         {
             id: "case2",
             name: "Case 2: Store Hold-up (Contaminated Statement)",
+            categoryTag: "Social / Memory",
+            description: "Assess co-witness discussion (memory conformity), suggestive questioning, and delay on witness statement veracity.",
             mandate: {
                 caseTitle: "State v. Miller - Store Hold-up Witness Evaluation",
                 commissioner: "Defense Counsel",
@@ -155,6 +157,55 @@ const APP_DATA = {
                     generalizabilityNotes: "Memory conformity occurs robustly in both lab discussions and real social interactions.",
                     relevanceNotes: "SESOI clearly exceeded: over 70% of co-witness pairs incorporate non-witnessed details into their subsequent statements.",
                     factorConclusion: "Unsupervised co-witness discussion creates a high risk of memory conformity and shared misinformation."
+                }
+            ]
+        },
+        {
+            id: "case3",
+            name: "Case 3: Overnight Interrogation (False Confession)",
+            categoryTag: "Interrogation / Clinical",
+            description: "Analyze coercive interrogation pressure, minimization themes, sleep deprivation, and Reid technique vulnerability.",
+            mandate: {
+                caseTitle: "State v. Thorne - Interrogation & Confession Evaluation",
+                commissioner: "District Court / Defense",
+                expertRole: "Independent Expert Witness in Forensic Psychology",
+                evidentiaryScope: "Evaluation of interrogation psychological pressure, false evidence ploys, and confession voluntariness.",
+                selectedPreset: "confession",
+                hypothesisHp: "Hypothesis 1 (H1): The confession statement is true, voluntary, and factually accurate.",
+                hypothesisHd: "Hypothesis 2 (H2): The confession is false, compliant, or contaminated by interrogation pressure."
+            },
+            factors: [
+                {
+                    id: "f_c3_minimization",
+                    name: "Minimization & False Promises of Leniency",
+                    target: "Suspect Thorne",
+                    category: "system",
+                    direction: "decreases",
+                    importance: 9,
+                    caseDescription: "Interrogators spent 4 hours minimizing the crime as an accidental mistake and implying immediate release upon confession.",
+                    replicabilityScore: 5,
+                    generalizabilityScore: 4,
+                    relevanceScore: 5,
+                    replicabilityNotes: "Laboratory cheating paradigms and field analyses show minimization significantly increases false confession rates (Kassin et al., 2018).",
+                    generalizabilityNotes: "Consistent across both experimental mock-interrogations and exoneration databases (Innocence Project).",
+                    relevanceNotes: "SESOI exceeded: minimization tactics quadruple compliant confession rates among innocent individuals.",
+                    factorConclusion: "Minimization tactics communicated implicit promises of leniency, drastically undermining confession diagnostic validity."
+                },
+                {
+                    id: "f_c3_sleep",
+                    name: "Sleep Deprivation & Interrogation Duration",
+                    target: "Suspect Thorne",
+                    category: "estimator",
+                    direction: "decreases",
+                    importance: 8,
+                    caseDescription: "Interrogation conducted continuously for 14 hours overnight without sleep.",
+                    replicabilityScore: 5,
+                    generalizabilityScore: 4,
+                    relevanceScore: 4,
+                    replicabilityNotes: "Experimental sleep deprivation studies demonstrate impaired cognitive control and elevated suggestibility (Frenda et al., 2016).",
+                    generalizabilityNotes: "Demonstrated across controlled sleep-loss protocols and archival interrogations.",
+                    relevanceNotes: "Substantial effect size: overnight sleep deprivation increases false confession likelihood by over 400%.",
+                    factorConclusion: "Severe sleep deprivation critically impaired executive functioning, elevating compliance under pressure."
                 }
             ]
         }
