@@ -67,6 +67,21 @@ This workbench guides users through evaluating eyewitness testimony, interrogati
 
 ---
 
+## 🌐 Deploying Free via GitHub Pages
+
+You can host this application online for free in under a minute using GitHub Pages:
+
+1. Open your repository on **GitHub.com**.
+2. Click **Settings** (gear icon at the top of the repo).
+3. In the left sidebar, click **Pages**.
+4. Under **Branch**, select `main` (or `master`), leave folder as `/ (root)`, and click **Save**.
+5. Within 1–2 minutes, your website will be live at:
+   ```
+   https://<your-username>.github.io/<your-repo-name>/
+   ```
+
+---
+
 ## 📁 Repository Structure
 
 ```

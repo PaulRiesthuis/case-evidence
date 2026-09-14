@@ -1776,20 +1776,48 @@ input[type="range"]::-webkit-slider-thumb {
 /* ===================================================================
    Global Floating Tooltip (Attached to Body to Prevent Clipping)
    =================================================================== */
-.concept-tip,
-.info-tip-trigger,
-.info-hover-badge {
+.info-tip-trigger {
     cursor: help;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-    color: inherit;
-    font-weight: 600;
     transition: all 0.15s ease;
 }
 
 .concept-tip {
+    cursor: help;
     border-bottom: 1px dotted var(--eur-cyan);
+    transition: color 0.15s ease;
+}
+
+.concept-tip:hover {
+    color: var(--eur-cyan);
+}
+
+[data-theme="light"] .concept-tip {
+    border-bottom-color: #0284c7;
+}
+
+[data-theme="light"] .concept-tip:hover {
+    color: #0369a1;
+}
+
+.concept-tip i.fa-circle-info,
+.concept-tip i.fa-info-circle {
+    font-size: 0.78em;
+    color: var(--eur-cyan);
+    opacity: 0.85;
+    margin-left: 0.2rem;
+    transition: transform 0.15s ease, opacity 0.15s ease;
+    vertical-align: 0.05em;
+}
+
+.concept-tip:hover i.fa-circle-info,
+.concept-tip:hover i.fa-info-circle {
+    transform: scale(1.2);
+    opacity: 1;
+}
+
+[data-theme="light"] .concept-tip i.fa-circle-info,
+[data-theme="light"] .concept-tip i.fa-info-circle {
+    color: #0284c7;
 }
 
 .info-tip {
@@ -1798,33 +1826,62 @@ input[type="range"]::-webkit-slider-thumb {
     justify-content: center;
     width: 17px;
     height: 17px;
+    min-width: 17px;
     border-radius: 50%;
     background: rgba(56, 189, 248, 0.15);
     color: var(--eur-cyan);
-    font-size: 0.72rem;
+    font-size: 0.62rem;
     font-weight: 700;
     cursor: help;
     margin-left: 0.35rem;
     vertical-align: middle;
-    transition: all 0.2s ease;
-    border: 1px solid rgba(56, 189, 248, 0.3);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    line-height: 1;
+    box-sizing: border-box;
+    flex-shrink: 0;
+}
+
+.info-tip i {
+    font-size: 0.6rem;
+    line-height: 1;
+    display: inline-block;
 }
 
 .info-tip:hover {
     background: var(--eur-cyan);
     color: #0f172a;
-    transform: scale(1.18);
+    border-color: var(--eur-cyan);
+    transform: scale(1.15);
     box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
 }
 
+[data-theme="light"] .info-tip {
+    background: rgba(2, 132, 199, 0.1);
+    border-color: rgba(2, 132, 199, 0.3);
+    color: #0284c7;
+}
+
+[data-theme="light"] .info-tip:hover {
+    background: #0284c7;
+    color: #ffffff;
+    border-color: #0284c7;
+    box-shadow: 0 0 10px rgba(2, 132, 199, 0.35);
+}
+
 .info-hover-badge {
+    cursor: help;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
     padding: 0.25rem 0.6rem;
     border-radius: var(--radius-sm);
     background: rgba(56, 189, 248, 0.08);
     border: 1px solid rgba(56, 189, 248, 0.25);
     font-size: 0.72rem;
     color: var(--eur-cyan);
-    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.15s ease;
 }
 
 .info-hover-badge:hover {
@@ -1843,20 +1900,6 @@ input[type="range"]::-webkit-slider-thumb {
 [data-theme="light"] .info-hover-badge:hover {
     background: rgba(2, 132, 199, 0.15);
     color: #0c4a6e;
-}
-
-.concept-tip i.fa-circle-info,
-.concept-tip i.fa-info-circle {
-    font-size: 0.75em;
-    color: var(--eur-cyan);
-    opacity: 0.85;
-    transition: transform 0.15s ease;
-}
-
-.concept-tip:hover i.fa-circle-info,
-.concept-tip:hover i.fa-info-circle {
-    transform: scale(1.2);
-    opacity: 1;
 }
 
 .global-concept-tooltip {

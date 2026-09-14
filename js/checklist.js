@@ -130,7 +130,7 @@ class ScientificChecklist {
                                     <td style="font-size: 0.85rem; color: var(--text-secondary); max-width: 320px;">
                                         ${f.caseDescription ? (
                                             f.caseDescription.length > 75 
-                                                ? `<span class="info-tip-trigger" data-tooltip="${f.caseDescription.replace(/"/g, '&quot;')}">${f.caseDescription.substring(0, 72)}... <span class="info-tip">ⓘ</span></span>`
+                                                ? `<span class="info-tip-trigger" data-tooltip="${f.caseDescription.replace(/"/g, '&quot;')}">${f.caseDescription.substring(0, 72)}... <span class="info-tip"><i class="fas fa-info"></i></span></span>`
                                                 : f.caseDescription
                                         ) : '<span style="color: var(--text-muted); font-style: italic;">No description provided.</span>'}
                                     </td>
@@ -418,7 +418,7 @@ class ScientificChecklist {
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
                             <label style="font-weight: 700; font-size: 0.85rem; color: var(--text-primary); display: flex; align-items: center; gap: 0.35rem;">
                                 <i class="fas fa-award" style="color: var(--eur-gold);"></i> Assign Replicability Score (1 – 5): <span style="color: var(--eur-danger);">* Mandatory</span>
-                                <span class="info-tip" data-tooltip="&lt;div style=&quot;font-size:0.78rem; line-height:1.4;&quot;&gt;&lt;strong style=&quot;color:#38bdf8;&quot;&gt;Replicability Scale Guidance&lt;/strong&gt;&lt;br/&gt;• 1: Single small study / contested findings&lt;br/&gt;• 3: Several multi-lab replications&lt;br/&gt;• 5: Large multi-site Registered Replication Reports &amp; meta-analyses.&lt;/div&gt;">ⓘ</span>
+                                <span class="info-tip" data-tooltip="&lt;div style=&quot;font-size:0.78rem; line-height:1.4;&quot;&gt;&lt;strong style=&quot;color:#38bdf8;&quot;&gt;Replicability Scale Guidance&lt;/strong&gt;&lt;br/&gt;• 1: Single small study / contested findings&lt;br/&gt;• 3: Several multi-lab replications&lt;br/&gt;• 5: Large multi-site Registered Replication Reports &amp; meta-analyses.&lt;/div&gt;"><i class="fas fa-info"></i></span>
                             </label>
                             <span id="rep-val-${factor.id}" style="font-weight: 800; font-family: var(--font-mono); color: ${rep !== null && rep !== undefined ? 'var(--eur-gold)' : 'var(--eur-danger)'}; font-size: 0.95rem;">
                                 ${rep !== null && rep !== undefined ? `${rep} / 5` : '⚠️ Not Yet Rated'}
@@ -427,7 +427,7 @@ class ScientificChecklist {
                         <div class="score-pill-selector">
                             ${[1, 2, 3, 4, 5].map(val => `
                                 <button type="button" class="score-pill-btn ${rep === val ? 'active' : ''}" 
-                                    onclick="window.checklistApp.updateScore('${factor.id}', 'replicabilityScore', ${val}, 'rep-val-${factor.id}')"
+                                     onclick="window.checklistApp.updateScore('${factor.id}', 'replicabilityScore', ${val}, 'rep-val-${factor.id}')"
                                     data-tooltip="&lt;strong style=&quot;color:#38bdf8;&quot;&gt;Replicability Score ${val}/5:&lt;/strong&gt; ${labels[val]}">
                                     <span class="pill-number">${val}</span>
                                     <span class="pill-desc">${labels[val]}</span>
@@ -445,7 +445,7 @@ class ScientificChecklist {
                     <div class="pillar-notes-box" style="margin-top: 1.25rem; background: var(--bg-surface-elevated); padding: 1.15rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
                         <div style="font-weight: 700; font-size: 0.88rem; color: var(--eur-cyan); margin-bottom: 0.35rem; display: flex; align-items: center; justify-content: space-between;">
                             <span><i class="fas fa-book-open"></i> 1. Replicability Notes & Literature Citations</span>
-                            <span class="info-tip" data-tooltip="&lt;div style=&quot;font-size:0.78rem; line-height:1.4;&quot;&gt;Cite key meta-analyses, sample sizes, and registered replications justifying why this score was selected.&lt;/div&gt;">ⓘ</span>
+                            <span class="info-tip" data-tooltip="&lt;div style=&quot;font-size:0.78rem; line-height:1.4;&quot;&gt;Cite key meta-analyses, sample sizes, and registered replications justifying why this score was selected.&lt;/div&gt;"><i class="fas fa-info"></i></span>
                         </div>
                         <p style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.45rem;">
                             Cite relevant empirical studies, meta-analyses, or multi-lab replications, and explain why you consider this Replicability rating fair:
@@ -499,7 +499,7 @@ class ScientificChecklist {
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
                             <label style="font-weight: 700; font-size: 0.85rem; color: var(--text-primary); display: flex; align-items: center; gap: 0.35rem;">
                                 <i class="fas fa-award" style="color: var(--eur-gold);"></i> Assign Generalizability Score (1 – 5): <span style="color: var(--eur-danger);">* Mandatory</span>
-                                <span class="info-tip" data-tooltip="&lt;div style=&quot;font-size:0.78rem; line-height:1.4;&quot;&gt;&lt;strong style=&quot;color:#fbbf24;&quot;&gt;Generalizability Scale Guidance&lt;/strong&gt;&lt;br/&gt;• 1: Lab-only vignette / static slides&lt;br/&gt;• 3: Realistic video staging with student volunteers&lt;br/&gt;• 5: Validated with real crime victims &amp; field police studies.&lt;/div&gt;">ⓘ</span>
+                                <span class="info-tip" data-tooltip="&lt;div style=&quot;font-size:0.78rem; line-height:1.4;&quot;&gt;&lt;strong style=&quot;color:#fbbf24;&quot;&gt;Generalizability Scale Guidance&lt;/strong&gt;&lt;br/&gt;• 1: Lab-only vignette / static slides&lt;br/&gt;• 3: Realistic video staging with student volunteers&lt;br/&gt;• 5: Validated with real crime victims &amp; field police studies.&lt;/div&gt;"><i class="fas fa-info"></i></span>
                             </label>
                             <span id="gen-val-${factor.id}" style="font-weight: 800; font-family: var(--font-mono); color: ${gen !== null && gen !== undefined ? 'var(--eur-gold)' : 'var(--eur-danger)'}; font-size: 0.95rem;">
                                 ${gen !== null && gen !== undefined ? `${gen} / 5` : '⚠️ Not Yet Rated'}
@@ -526,7 +526,7 @@ class ScientificChecklist {
                     <div class="pillar-notes-box" style="margin-top: 1.25rem; background: var(--bg-surface-elevated); padding: 1.15rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
                         <div style="font-weight: 700; font-size: 0.88rem; color: var(--eur-gold); margin-bottom: 0.35rem; display: flex; align-items: center; justify-content: space-between;">
                             <span><i class="fas fa-globe"></i> 2. Generalizability Notes & Ecological Validity</span>
-                            <span class="info-tip" data-tooltip="&lt;div style=&quot;font-size:0.78rem; line-height:1.4;&quot;&gt;Discuss population matching (age/stress/cognition) and how physical boundary conditions (distance, lighting, delay) map onto this case.&lt;/div&gt;">ⓘ</span>
+                            <span class="info-tip" data-tooltip="&lt;div style=&quot;font-size:0.78rem; line-height:1.4;&quot;&gt;Discuss population matching (age/stress/cognition) and how physical boundary conditions (distance, lighting, delay) map onto this case.&lt;/div&gt;"><i class="fas fa-info"></i></span>
                         </div>
                         <p style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.45rem;">
                             Discuss ecological validity, field vs. lab research, population/arousal match to this case, and why you consider this Generalizability rating fair:
@@ -584,7 +584,7 @@ class ScientificChecklist {
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
                             <label style="font-weight: 700; font-size: 0.85rem; color: var(--text-primary); display: flex; align-items: center; gap: 0.35rem;">
                                 <i class="fas fa-award" style="color: var(--eur-gold);"></i> Assign Practical Relevance Score (1 – 5): <span style="color: var(--eur-danger);">* Mandatory</span>
-                                <span class="info-tip" data-tooltip="&lt;div style=&quot;font-size:0.78rem; line-height:1.4;&quot;&gt;&lt;strong style=&quot;color:#10b981;&quot;&gt;Practical Relevance &amp; SESOI Guidance&lt;/strong&gt;&lt;br/&gt;• 1: Below smallest effect size of interest&lt;br/&gt;• 3: Moderate effect, meaningfully shifts diagnosticity&lt;br/&gt;• 5: Decisive impact on legal testimony validity.&lt;/div&gt;">ⓘ</span>
+                                <span class="info-tip" data-tooltip="&lt;div style=&quot;font-size:0.78rem; line-height:1.4;&quot;&gt;&lt;strong style=&quot;color:#10b981;&quot;&gt;Practical Relevance &amp; SESOI Guidance&lt;/strong&gt;&lt;br/&gt;• 1: Below smallest effect size of interest&lt;br/&gt;• 3: Moderate effect, meaningfully shifts diagnosticity&lt;br/&gt;• 5: Decisive impact on legal testimony validity.&lt;/div&gt;"><i class="fas fa-info"></i></span>
                             </label>
                             <span id="rel-val-${factor.id}" style="font-weight: 800; font-family: var(--font-mono); color: ${rel !== null && rel !== undefined ? 'var(--eur-gold)' : 'var(--eur-danger)'}; font-size: 0.95rem;">
                                 ${rel !== null && rel !== undefined ? `${rel} / 5` : '⚠️ Not Yet Rated'}
@@ -611,7 +611,7 @@ class ScientificChecklist {
                     <div class="pillar-notes-box" style="margin-top: 1.25rem; background: var(--bg-surface-elevated); padding: 1.15rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
                         <div style="font-weight: 700; font-size: 0.88rem; color: var(--eur-green); margin-bottom: 0.35rem; display: flex; align-items: center; justify-content: space-between;">
                             <span><i class="fas fa-gavel"></i> 3. Practical Relevance Notes, SESOI & Case Moderators</span>
-                            <span class="info-tip" data-tooltip="&lt;div style=&quot;font-size:0.78rem; line-height:1.4;&quot;&gt;Explain whether effect size exceeds SESOI, and describe which specific case factors amplify or dampen the effect.&lt;/div&gt;">ⓘ</span>
+                            <span class="info-tip" data-tooltip="&lt;div style=&quot;font-size:0.78rem; line-height:1.4;&quot;&gt;Explain whether effect size exceeds SESOI, and describe which specific case factors amplify or dampen the effect.&lt;/div&gt;"><i class="fas fa-info"></i></span>
                         </div>
                         <p style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 0.45rem;">
                             Explain whether this effect exceeds the Smallest Effect Size of Interest (SESOI), which case variables increase (amplify) or decrease (dampen) the effect, and why you consider this rating fair:

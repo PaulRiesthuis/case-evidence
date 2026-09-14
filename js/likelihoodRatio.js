@@ -314,7 +314,7 @@ class LikelihoodRatioLab {
                         <div class="slider-group">
                             <div class="slider-header">
                                 <label class="info-tip-trigger" data-tooltip="&lt;div style=&quot;font-size:0.78rem;&quot;&gt;&lt;strong style=&quot;color:#60a5fa;&quot;&gt;P(Evidence | H1):&lt;/strong&gt; Probability of observing this witness statement/identification if Hypothesis 1 is TRUE.&lt;/div&gt;">
-                                    <i class="fas fa-check-circle text-primary"></i> P(Evidence | H<sub>1</sub>) <span class="info-tip">ⓘ</span>
+                                    <i class="fas fa-check-circle text-primary"></i> P(Evidence | H<sub>1</sub>) <span class="info-tip"><i class="fas fa-info"></i></span>
                                 </label>
                                 <span class="prob-val" id="val-php-${item.id}">${(php * 100).toFixed(0)}%</span>
                             </div>
@@ -327,7 +327,7 @@ class LikelihoodRatioLab {
                         <div class="slider-group">
                             <div class="slider-header">
                                 <label class="info-tip-trigger" data-tooltip="&lt;div style=&quot;font-size:0.78rem;&quot;&gt;&lt;strong style=&quot;color:#fbbf24;&quot;&gt;P(Evidence | H2):&lt;/strong&gt; Probability of observing this witness statement/identification if Hypothesis 2 is TRUE.&lt;/div&gt;">
-                                    <i class="fas fa-times-circle text-warning"></i> P(Evidence | H<sub>2</sub>) <span class="info-tip">ⓘ</span>
+                                    <i class="fas fa-times-circle text-warning"></i> P(Evidence | H<sub>2</sub>) <span class="info-tip"><i class="fas fa-info"></i></span>
                                 </label>
                                 <span class="prob-val" id="val-phd-${item.id}">${(phd * 100).toFixed(0)}%</span>
                             </div>
@@ -637,7 +637,7 @@ class LikelihoodRatioLab {
                                  data-tooltip="&lt;div style=&quot;font-size:0.8rem; line-height:1.45;&quot;&gt;&lt;strong style=&quot;color:#10b981;&quot;&gt;Independent Evidence Sources (Rassin et al., 2022)&lt;/strong&gt;&lt;p style=&quot;margin:0.25rem 0 0 0;&quot;&gt;When factors stem from separate witnesses or separate procedures, errors are independent. Direct multiplication (LR1 &times; LR2 &times; ...) is mathematically and methodologically sound.&lt;/p&gt;&lt;/div&gt;">
                                 <div style="font-weight: 700; color: var(--eur-green); margin-bottom: 0.15rem; font-size: 0.72rem; display: flex; align-items: center; justify-content: space-between;">
                                     <span><i class="fas fa-check-circle"></i> Separate Observers</span>
-                                    <span class="info-tip">ⓘ</span>
+                                    <span class="info-tip"><i class="fas fa-info"></i></span>
                                 </div>
                                 <p style="margin: 0; color: var(--text-secondary); font-size: 0.7rem; line-height: 1.35;">
                                     Independent witnesses / distinct procedures → Direct multiplication applies.
@@ -650,7 +650,7 @@ class LikelihoodRatioLab {
                                  data-tooltip="&lt;div style=&quot;font-size:0.8rem; line-height:1.45;&quot;&gt;&lt;strong style=&quot;color:#fbbf24;&quot;&gt;Shared Cognitive Variance&lt;/strong&gt;&lt;p style=&quot;margin:0.25rem 0 0 0;&quot;&gt;Multiple estimator variables affecting the same witness memory trace share underlying variance. Apply conservative dampening or address correlation in your written expert opinion.&lt;/p&gt;&lt;/div&gt;">
                                 <div style="font-weight: 700; color: var(--eur-gold); margin-bottom: 0.15rem; font-size: 0.72rem; display: flex; align-items: center; justify-content: space-between;">
                                     <span><i class="fas fa-balance-scale"></i> Same Witness Trace</span>
-                                    <span class="info-tip">ⓘ</span>
+                                    <span class="info-tip"><i class="fas fa-info"></i></span>
                                 </div>
                                 <p style="margin: 0; color: var(--text-secondary); font-size: 0.7rem; line-height: 1.35;">
                                     Shared cognitive variance → Use conservative mode or add nuance in court.

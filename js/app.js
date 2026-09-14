@@ -475,7 +475,7 @@ class App {
 
         // Delegated event listeners
         document.addEventListener('mouseover', (e) => {
-            const tipEl = e.target.closest('[data-tooltip], [data-tip], .concept-tip');
+            const tipEl = e.target.closest('[data-tooltip], [data-tip], .concept-tip, .info-tip, .info-tip-trigger');
             if (tipEl) {
                 // If title attribute exists on element, strip it to prevent duplicate browser tooltip
                 if (tipEl.hasAttribute('title') && !tipEl.hasAttribute('data-tooltip')) {
